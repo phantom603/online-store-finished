@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Search</title>
+
+  <!-- font-family Montserrat -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css">
+  <link rel="stylesheet" href="search-style.css">
+</head>
+
+<body>
+<div id="root"></div>
+
+<script type="module">
+  import Search from './solution/index.js';
+
+  const search = new Search();
+
+  root.append(search.element);
+
+  const BACKEND_URL = 'http://localhost:3000';
+  const url = new URL('products', BACKEND_URL);
+
+  search.element.addEventListener('search-filter', async event => {
+    url.searchParams.set('q', event.detail);
+
+    const response = await fetch(url);
+    const data = await response.json();
+
+    console.error('data', data);
+  });
+</script>
+</body>
+
+</html>
