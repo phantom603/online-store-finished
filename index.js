@@ -3,15 +3,15 @@ import Modal from "./src/modal/index.js";
 
 // import Cart from '../../../module-3/cart/index.js';
 import Cart from "./src/cart/index.js";
-import Pagination from "./src/pagination/solution/index.js";
+import Pagination from "./src/pagination/index.js";
 
-import SideBar from "./src/side-bar/solution/index.js";
-import CardsList from "./src/cards-list-v1/solution/index.js";
+import SideBar from "./src/side-bar/index.js";
+import CardsList from "./src/cards-list-v1/index.js";
 
 // import Card from '../../../module-2/card/solution/index.js';
-import Card from "./src/card/solution/index.js";
+import Card from "./src/card/index.js";
 // import Search from '../../search/solution/index.js';
-import Search from "./src/search/solution/index.js";
+import Search from "./src/search/index.js";
 
 import { request } from "./request/index.js";
 import { prepareFilters } from "./prepare-filters/index.js";

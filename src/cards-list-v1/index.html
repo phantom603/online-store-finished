@@ -1,29 +1,30 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <link rel="stylesheet" href="../../06-javascript-01/card/card-style.css">
-  <link rel="stylesheet" href="../../module-6/main-page/style.css">
-</head>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="stylesheet" href="./card-list-style.css" />
+    <link rel="stylesheet" href="../card/card-style.css" />
+    <link rel="stylesheet" href="../../styles.css" />
+  </head>
 
-<body>
-  <div id="root"></div>
+  <body>
+    <div id="root"></div>
 
-  <script type="module">
-    import Card from '../../06-javascript-01/card/solution/index.js';
-    import CardsList from './solution/index.js';
-    import { products } from '../../fixtures/products.js'
+    <script type="module">
+      import Card from "../card/index.js";
+      import CardsList from "./index.js";
+      import { products } from "../../fixtures/products.js";
 
-    const cardsList = new CardsList({
-      data: products,
-      Component: Card
-    });
+      const cardsList = new CardsList({
+        data: products,
+        Component: Card,
+      });
 
-    root.append(cardsList.element);
+      root.append(cardsList.element);
 
-    document.addEventListener('add-to-cart', event => {
-      console.error(event.detail);
-    });
-  </script>
-</body>
+      document.addEventListener("add-to-cart", (event) => {
+        console.error(event.detail);
+      });
+    </script>
+  </body>
 </html>

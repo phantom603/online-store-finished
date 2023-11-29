@@ -1,6 +1,6 @@
-import DoubleSlider from './solution';
+import DoubleSlider from "./index.js";
 
-describe('DoubleSlider', () => {
+describe("DoubleSlider", () => {
   let doubleSlider;
 
   beforeEach(() => {
@@ -18,13 +18,13 @@ describe('DoubleSlider', () => {
     doubleSlider = new DoubleSlider({
       min: 100,
       max: 200,
-      formatValue: value => '$' + value,
+      formatValue: (value) => "$" + value,
       selected: {
         from: 120,
-        to: 150
+        to: 150,
       },
       precision: 0,
-      filterName: ''
+      filterName: "",
     });
 
     document.body.append(doubleSlider.element);
@@ -35,59 +35,71 @@ describe('DoubleSlider', () => {
     doubleSlider = null;
   });
 
-  it('should be rendered correctly', () => {
+  it("should be rendered correctly", () => {
     expect(doubleSlider.element).toBeInTheDocument();
     expect(doubleSlider.element).toBeVisible();
   });
 
-  it('should have ability to set slider boundaries', () => {
+  it("should have ability to set slider boundaries", () => {
     doubleSlider = new DoubleSlider({
       min: 400,
       max: 600,
-      formatValue: value => '$' + value,
+      formatValue: (value) => "$" + value,
     });
 
-    const leftBoundary = doubleSlider.element.querySelector('span[data-element="from"]');
-    const rightBoundary = doubleSlider.element.querySelector('span[data-element="to"]');
+    const leftBoundary = doubleSlider.element.querySelector(
+      'span[data-element="from"]',
+    );
+    const rightBoundary = doubleSlider.element.querySelector(
+      'span[data-element="to"]',
+    );
 
     expect(leftBoundary).toHaveTextContent("$400");
     expect(rightBoundary).toHaveTextContent("$600");
   });
 
-  it('should have ability to set selected range', () => {
+  it("should have ability to set selected range", () => {
     doubleSlider = new DoubleSlider({
       min: 300,
       max: 800,
       selected: {
         from: 400,
-        to: 600
+        to: 600,
       },
-      formatValue: value => '$' + value,
+      formatValue: (value) => "$" + value,
     });
 
-    const leftBoundary = doubleSlider.element.querySelector('span[data-element="from"]');
-    const rightBoundary = doubleSlider.element.querySelector('span[data-element="to"]');
+    const leftBoundary = doubleSlider.element.querySelector(
+      'span[data-element="from"]',
+    );
+    const rightBoundary = doubleSlider.element.querySelector(
+      'span[data-element="to"]',
+    );
 
     expect(leftBoundary).toHaveTextContent("$400");
     expect(rightBoundary).toHaveTextContent("$600");
   });
 
-  it('should have ability to move left slider to start boundary', () => {
-    const leftSlider = doubleSlider.element.querySelector('.range-slider__thumb-left');
-    const leftBoundary = doubleSlider.element.querySelector('span[data-element="from"]');
+  it("should have ability to move left slider to start boundary", () => {
+    const leftSlider = doubleSlider.element.querySelector(
+      ".range-slider__thumb-left",
+    );
+    const leftBoundary = doubleSlider.element.querySelector(
+      'span[data-element="from"]',
+    );
 
-    const down = new MouseEvent('pointerdown', {
-      bubbles: true
+    const down = new MouseEvent("pointerdown", {
+      bubbles: true,
     });
 
-    const move = new MouseEvent('pointermove', {
+    const move = new MouseEvent("pointermove", {
       clientX: 0,
-      bubbles: true
+      bubbles: true,
     });
 
-    const up = new MouseEvent('pointerup', {
+    const up = new MouseEvent("pointerup", {
       clientX: 0,
-      bubbles: true
+      bubbles: true,
     });
 
     leftSlider.dispatchEvent(down);
@@ -97,17 +109,21 @@ describe('DoubleSlider', () => {
     expect(leftBoundary).toHaveTextContent(doubleSlider.min);
   });
 
-  it('should have ability to move right slider to end boundary', () => {
-    const rightSlider = doubleSlider.element.querySelector('.range-slider__thumb-right');
-    const rightBoundary = doubleSlider.element.querySelector('span[data-element="to"]');
+  it("should have ability to move right slider to end boundary", () => {
+    const rightSlider = doubleSlider.element.querySelector(
+      ".range-slider__thumb-right",
+    );
+    const rightBoundary = doubleSlider.element.querySelector(
+      'span[data-element="to"]',
+    );
 
-    const down = new MouseEvent('pointerdown', {
-      bubbles: true
+    const down = new MouseEvent("pointerdown", {
+      bubbles: true,
     });
 
-    const move = new MouseEvent('pointermove', {
+    const move = new MouseEvent("pointermove", {
       clientX: 1000,
-      bubbles: true
+      bubbles: true,
     });
 
     rightSlider.dispatchEvent(down);
@@ -116,24 +132,32 @@ describe('DoubleSlider', () => {
     expect(rightBoundary).toHaveTextContent(doubleSlider.max);
   });
 
-  it('should have ability to select all range', () => {
-    const leftSlider = doubleSlider.element.querySelector('.range-slider__thumb-left');
-    const leftBoundary = doubleSlider.element.querySelector('span[data-element="from"]');
-    const rightSlider = doubleSlider.element.querySelector('.range-slider__thumb-right');
-    const rightBoundary = doubleSlider.element.querySelector('span[data-element="to"]');
+  it("should have ability to select all range", () => {
+    const leftSlider = doubleSlider.element.querySelector(
+      ".range-slider__thumb-left",
+    );
+    const leftBoundary = doubleSlider.element.querySelector(
+      'span[data-element="from"]',
+    );
+    const rightSlider = doubleSlider.element.querySelector(
+      ".range-slider__thumb-right",
+    );
+    const rightBoundary = doubleSlider.element.querySelector(
+      'span[data-element="to"]',
+    );
 
-    const down = new MouseEvent('pointerdown', {
-      bubbles: true
+    const down = new MouseEvent("pointerdown", {
+      bubbles: true,
     });
 
-    const moveRight = new MouseEvent('pointermove', {
+    const moveRight = new MouseEvent("pointermove", {
       clientX: 1000,
-      bubbles: true
+      bubbles: true,
     });
 
-    const moveLeft = new MouseEvent('pointermove', {
+    const moveLeft = new MouseEvent("pointermove", {
       clientX: 0,
-      bubbles: true
+      bubbles: true,
     });
 
     leftSlider.dispatchEvent(down);
@@ -146,55 +170,69 @@ describe('DoubleSlider', () => {
     expect(rightBoundary).toHaveTextContent(doubleSlider.max);
   });
 
-  it('should have ability to select single value (when min and max range equal)', () => {
-    const leftSlider = doubleSlider.element.querySelector('.range-slider__thumb-left');
-    const leftBoundary = doubleSlider.element.querySelector('span[data-element="from"]');
-    const rightBoundary = doubleSlider.element.querySelector('span[data-element="to"]');
+  it("should have ability to select single value (when min and max range equal)", () => {
+    const leftSlider = doubleSlider.element.querySelector(
+      ".range-slider__thumb-left",
+    );
+    const leftBoundary = doubleSlider.element.querySelector(
+      'span[data-element="from"]',
+    );
+    const rightBoundary = doubleSlider.element.querySelector(
+      'span[data-element="to"]',
+    );
 
-    const down = new MouseEvent('pointerdown', {
-      bubbles: true
+    const down = new MouseEvent("pointerdown", {
+      bubbles: true,
     });
 
-    const move = new MouseEvent('pointermove', {
+    const move = new MouseEvent("pointermove", {
       clientX: 500,
-      bubbles: true
+      bubbles: true,
     });
 
     leftSlider.dispatchEvent(down);
     leftSlider.dispatchEvent(move);
 
-    expect(leftBoundary.textContent.trim()).toEqual(rightBoundary.textContent.trim());
+    expect(leftBoundary.textContent.trim()).toEqual(
+      rightBoundary.textContent.trim(),
+    );
   });
 
-  it('should have ability to set range value, for example: usd, eur, etc.', () => {
+  it("should have ability to set range value, for example: usd, eur, etc.", () => {
     doubleSlider = new DoubleSlider({
       min: 100,
       max: 200,
-      formatValue: value => 'USD' + value
+      formatValue: (value) => "USD" + value,
     });
 
-    const leftBoundary = doubleSlider.element.querySelector('span[data-element="from"]');
-    const rightBoundary = doubleSlider.element.querySelector('span[data-element="to"]');
+    const leftBoundary = doubleSlider.element.querySelector(
+      'span[data-element="from"]',
+    );
+    const rightBoundary = doubleSlider.element.querySelector(
+      'span[data-element="to"]',
+    );
 
-    expect(leftBoundary.textContent.trim()).toContain('USD');
-    expect(rightBoundary.textContent.trim()).toContain('USD');
+    expect(leftBoundary.textContent.trim()).toContain("USD");
+    expect(rightBoundary.textContent.trim()).toContain("USD");
   });
 
   it('should produce event "range-selected"', () => {
-    const spyDispatchEvent = jest.spyOn(doubleSlider.element, 'dispatchEvent');
-    const leftSlider = doubleSlider.element.querySelector('.range-slider__thumb-left');
+    const spyDispatchEvent = jest.spyOn(doubleSlider.element, "dispatchEvent");
+    const leftSlider = doubleSlider.element.querySelector(
+      ".range-slider__thumb-left",
+    );
 
-    const down = new MouseEvent('pointerdown', {
-      bubbles: true
+    const down = new MouseEvent("pointerdown", {
+      bubbles: true,
     });
 
-    const move = new MouseEvent('pointermove', {
+    const move = new MouseEvent("pointermove", {
       clientX: 1000,
-      bubbles: true
+      bubbles: true,
     });
 
-    const up = new MouseEvent('pointerup', {
-      bubbles: true
+    const up = new MouseEvent("pointerup", {
+      bubbles: true,
     });
 
     leftSlider.dispatchEvent(down);
@@ -203,24 +241,26 @@ describe('DoubleSlider', () => {
 
     const [rangeSelectEvent] = spyDispatchEvent.mock.calls;
 
-    expect(rangeSelectEvent[0].type).toEqual('range-selected');
+    expect(rangeSelectEvent[0].type).toEqual("range-selected");
   });
 
-  it('should have a new ranges in produced event', () => {
-    const spyDispatchEvent = jest.spyOn(doubleSlider.element, 'dispatchEvent');
-    const leftSlider = doubleSlider.element.querySelector('.range-slider__thumb-left');
+  it("should have a new ranges in produced event", () => {
+    const spyDispatchEvent = jest.spyOn(doubleSlider.element, "dispatchEvent");
+    const leftSlider = doubleSlider.element.querySelector(
+      ".range-slider__thumb-left",
+    );
 
-    const down = new MouseEvent('pointerdown', {
-      bubbles: true
+    const down = new MouseEvent("pointerdown", {
+      bubbles: true,
     });
 
-    const move = new MouseEvent('pointermove', {
+    const move = new MouseEvent("pointermove", {
       clientX: 200,
-      bubbles: true
+      bubbles: true,
     });
 
-    const up = new MouseEvent('pointerup', {
-      bubbles: true
+    const up = new MouseEvent("pointerup", {
+      bubbles: true,
     });
 
     leftSlider.dispatchEvent(down);
@@ -231,14 +271,15 @@ describe('DoubleSlider', () => {
 
     expect(spyDispatchEvent).toHaveBeenCalled();
     expect(customEvent.detail).toEqual({
-      filterName: '',
+      filterName: "",
       value: {
-        from: 120, to: 150
-      }
+        from: 120,
+        to: 150,
+      },
     });
   });
 
-  it('should have ability to be destroyed', () => {
+  it("should have ability to be destroyed", () => {
     doubleSlider.destroy();
 
     expect(doubleSlider.element).not.toBeInTheDocument();

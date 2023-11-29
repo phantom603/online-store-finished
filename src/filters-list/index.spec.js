@@ -1,6 +1,6 @@
-import FiltersList from './solution';
+import FiltersList from "./index.js";
 
-describe('FiltersList', () => {
+describe("FiltersList", () => {
   let filtersList;
 
   beforeEach(() => {
@@ -14,12 +14,12 @@ describe('FiltersList', () => {
     filtersList = null;
   });
 
-  it('should be rendered correctly', () => {
+  it("should be rendered correctly", () => {
     expect(filtersList.element).toBeInTheDocument();
     expect(filtersList.element).toBeVisible();
   });
 
-  it('should have ability to be destroyed', () => {
+  it("should have ability to be destroyed", () => {
     filtersList.destroy();
 
     expect(filtersList.element).not.toBeInTheDocument();

@@ -1,7 +1,7 @@
-import Card from './solution';
-import { products } from '../../fixtures/products.js';
+import Card from "./index.js";
+import { products } from "../../fixtures/products.js";
 
-describe('Card', () => {
+describe("Card", () => {
   let card;
 
   beforeEach(() => {
@@ -15,12 +15,12 @@ describe('Card', () => {
     card = null;
   });
 
-  it('should be rendered correctly', () => {
+  it("should be rendered correctly", () => {
     expect(card.element).toBeInTheDocument();
     expect(card.element).toBeVisible();
   });
 
-  it('should have ability to be destroyed', () => {
+  it("should have ability to be destroyed", () => {
     card.destroy();
 
     expect(card.element).not.toBeInTheDocument();

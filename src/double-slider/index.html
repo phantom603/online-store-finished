@@ -1,22 +1,25 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>DoubleSlider</title>
+  <head>
+    <meta charset="utf-8" />
+    <title>DoubleSlider</title>
 
-  <!-- font-family Montserrat -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap">
-  <link rel="stylesheet" href="double-slider-style.css">
-</head>
-<body>
-<div id="root"></div>
+    <!-- font-family Montserrat -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&display=swap"
+    />
+    <link rel="stylesheet" href="double-slider-style.css" />
+  </head>
+  <body>
+    <div id="root"></div>
 
-<script type="module">
-  import DoubleSlider from './solution/index.js';
+    <script type="module">
+      import DoubleSlider from "./index.js";
 
-  const slider = new DoubleSlider();
+      const slider = new DoubleSlider();
 
-  root.append(slider.element);
-</script>
-</body>
+      root.append(slider.element);
+    </script>
+  </body>
 </html>

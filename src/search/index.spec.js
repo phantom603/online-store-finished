@@ -1,6 +1,6 @@
-import Search from './solution';
+import Search from "./index.js";
 
-describe('Search', () => {
+describe("Search", () => {
   let search;
 
   beforeEach(() => {
@@ -14,15 +14,14 @@ describe('Search', () => {
     search = null;
   });
 
-  it('should be rendered correctly', () => {
+  it("should be rendered correctly", () => {
     expect(search.element).toBeInTheDocument();
     expect(search.element).toBeVisible();
   });
 
-  it('should have ability to be destroyed', () => {
+  it("should have ability to be destroyed", () => {
     search.destroy();
 
     expect(search.element).not.toBeInTheDocument();
   });
 });
-

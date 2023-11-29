@@ -1,14 +1,14 @@
-import Card from '../../06-javascript-01/card/solution/index.js';
-import CardsList from './solution/index.js';
-import { products } from '../../fixtures/products.js';
+import Card from "../card/index.js";
+import CardsList from "./index.js";
+import { products } from "../../fixtures/products.js";
 
-describe('CardsList', () => {
+describe("CardsList", () => {
   let cardsList;
 
   beforeEach(() => {
     cardsList = new CardsList({
       data: products,
-      Component: Card
+      Component: Card,
     });
 
     document.body.append(cardsList.element);
@@ -19,16 +19,16 @@ describe('CardsList', () => {
     cardsList = null;
   });
 
-  it('should be rendered correctly', () => {
+  it("should be rendered correctly", () => {
     expect(cardsList.element).toBeInTheDocument();
     expect(cardsList.element).toBeVisible();
   });
 
-  it('should have ability to be updated', () => {
+  it("should have ability to be updated", () => {
     const [firstProduct, secondProduct] = products;
     const cardsList = new CardsList({
       data: [firstProduct],
-      Component: Card
+      Component: Card,
     });
 
     cardsList.update([secondProduct]);
@@ -42,10 +42,9 @@ describe('CardsList', () => {
     expect(body).toHaveTextContent(secondProduct.category);
   });
 
-  it('should have ability to be destroyed', () => {
+  it("should have ability to be destroyed", () => {
     cardsList.destroy();
 
     expect(cardsList.element).not.toBeInTheDocument();
   });
 });
-
