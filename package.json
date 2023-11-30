@@ -5,7 +5,7 @@
   "scripts": {
     "start:server": "json-server --watch ./server/db.json --routes ./server/routes.json --port 3001 --",
     "start:client": "parcel index.html",
-    "build": "parcel build index.html --dist-dir output/dist",
+    "build": "parcel build index.html --dist-dir build",
     "start": "concurrently --kill-others 'npm run start:client' 'npm run start:server'",
     "clean": "rimraf output/dist",
     "test": "jest"

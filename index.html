@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8" />
-    <title>Main page</title>
+    <title>Online Store</title>
 
     <!-- font-family Montserrat -->
     <link
@@ -29,11 +29,9 @@
   <body>
     <div id="root"></div>
     <script>
-      window.process = {
-        env: {
-          BACKEND_URL: "",
-          // ... other env variables
-        },
+      window[Symbol.for("app-config")] = {
+        BACKEND_URL: "http://localhost:3001/api/",
+        // ... other env variables
       };
     </script>
 

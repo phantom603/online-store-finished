@@ -8,16 +8,13 @@ import Pagination from "./src/pagination/index.js";
 import SideBar from "./src/side-bar/index.js";
 import CardsList from "./src/cards-list-v1/index.js";
 
-// import Card from '../../../module-2/card/solution/index.js';
 import Card from "./src/card/index.js";
-// import Search from '../../search/solution/index.js';
 import Search from "./src/search/index.js";
 
 import { request } from "./request/index.js";
 import { prepareFilters } from "./prepare-filters/index.js";
 
-// const BACKEND_URL = process.env.BACKEND_URL || `${window.location.href}api/`
-const BACKEND_URL = "http://localhost:3001/";
+const { BACKEND_URL } = window[Symbol.for("app-config")];
 
 export default class Page {
   element;
