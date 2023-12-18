@@ -5,11 +5,12 @@
   "scripts": {
     "start:server": "json-server --watch ./server/db.json --routes ./server/routes.json --port 3001 --",
     "start:client": "parcel index.html",
-    "build": "parcel build index.html --dist-dir build",
+    "build": "NODE_ENV=production parcel build index.html --dist-dir build",
     "start": "concurrently --kill-others 'npm run start:client' 'npm run start:server'",
     "clean": "rimraf output/dist",
     "test": "jest",
-    "test:coverage": "npm test -- --coverage"
+    "test:coverage": "npm test -- --coverage",
+    "deploy": "rsync -vzr --no-perms --no-owner --no-group --delete build/ github_ci_bot@159.65.113.178:/var/www/online-store.bootcamp.place"
   },
   "author": "",
   "license": "ISC",

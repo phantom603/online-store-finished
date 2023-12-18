@@ -1,3 +1,5 @@
+import "./config.js";
+
 import Modal from "./src/modal/index.js";
 
 import Cart from "./src/cart/index.js";
