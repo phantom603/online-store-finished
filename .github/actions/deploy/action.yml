@@ -31,7 +31,7 @@ runs:
       shell: bash
 
     - name: Build
-      run: npm run build:${{ inputs.env }}
+      run: npm run build
       shell: bash
 
     - name: Add SSH key
