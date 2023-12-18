@@ -1,0 +1,48 @@
+name: "Deploy"
+inputs:
+  target:
+    description: "Name of the folder under /var/www/ to deploy into"
+    required: true
+  env:
+    description: "Environment code"
+    required: true
+  ssh-user:
+    description: "Username for SSH connection"
+    required: true
+  ssh-host:
+    description: "Host address for SSH connection"
+    required: true
+  ssh-private-key:
+    description: "Private key for SSH connection"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+        cache: "npm"
+
+    - name: Install dependencies
+      run: npm ci
+      shell: bash
+
+    - name: Build
+      run: npm run build:${{ inputs.env }}
+      shell: bash
+
+    - name: Add SSH key
+      uses: webfactory/ssh-agent@v0.7.0
+      with:
+        ssh-private-key: ${{ inputs.ssh-private-key }}
+
+    - name: Add known hosts
+      run: ssh-keyscan ${{ inputs.ssh-host }} >> ~/.ssh/known_hosts
+      shell: bash
+
+    - name: Deploy
+      run: rsync -vzr --no-perms --no-owner --no-group --delete build/ ${{ inputs.ssh-user }}@${{ inputs.ssh-host }}:/var/www/${{ inputs.target }}
+      shell: bash

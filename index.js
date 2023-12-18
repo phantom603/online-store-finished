@@ -1,7 +1,5 @@
-// TODO: change from index.js to solution/index.js
 import Modal from "./src/modal/index.js";
 
-// import Cart from '../../../module-3/cart/index.js';
 import Cart from "./src/cart/index.js";
 import Pagination from "./src/pagination/index.js";
 

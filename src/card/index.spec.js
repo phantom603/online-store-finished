@@ -1,7 +1,7 @@
 import Card from "./index.js";
 import { products } from "../../fixtures/products.js";
 
-describe("Card", () => {
+describe("Card component", () => {
   let card;
 
   beforeEach(() => {
@@ -16,6 +16,7 @@ describe("Card", () => {
   });
 
   it("should be rendered correctly", () => {
+    console.log(123);
     expect(card.element).toBeInTheDocument();
     expect(card.element).toBeVisible();
   });
