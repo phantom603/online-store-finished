@@ -1,8 +1,13 @@
 import Card from "../card/index.js";
 import CardsList from "./index.js";
-import { products } from "../../fixtures/products.js";
+// import { products } from "../../fixtures/products.js";
 
-describe("CardsList", () => {
+const products = [
+  { title: "product 1", rating: 4, price: 100, category: "laptop" },
+  { title: "product 2", rating: 5, price: 200, category: "laptop" },
+];
+
+describe("CardsList component", () => {
   let cardsList;
 
   beforeEach(() => {
@@ -17,11 +22,18 @@ describe("CardsList", () => {
   afterEach(() => {
     cardsList.destroy();
     cardsList = null;
+    document.body.innerHTML = "";
   });
 
   it("should be rendered correctly", () => {
     expect(cardsList.element).toBeInTheDocument();
     expect(cardsList.element).toBeVisible();
+  });
+
+  it("should have appropriate items amount in list", () => {
+    const { body } = cardsList.subElements;
+
+    expect(body.childNodes.length).toEqual(products.length);
   });
 
   it("should have ability to be updated", () => {
