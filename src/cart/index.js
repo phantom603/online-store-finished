@@ -1,13 +1,13 @@
 export default class Cart {
   items = {};
 
-  constructor () {
+  constructor() {
     this.render();
     this.getSubElements();
     this.initEventListeners();
   }
 
-  get template () {
+  get template() {
     return `
       <div class="cart-container">
         <ul class="cart-list" data-element='list'>
@@ -23,17 +23,17 @@ export default class Cart {
     `;
   }
 
-  render () {
-    const element = document.createElement('div');
+  render() {
+    const element = document.createElement("div");
 
     element.innerHTML = this.template;
 
     this.element = element.firstElementChild;
   }
 
-  getSubElements () {
+  getSubElements() {
     const result = {};
-    const elements = this.element.querySelectorAll('[data-element]');
+    const elements = this.element.querySelectorAll("[data-element]");
 
     for (const subElement of elements) {
       const name = subElement.dataset.element;
@@ -44,28 +44,37 @@ export default class Cart {
     this.subElements = result;
   }
 
-  initEventListeners () {
-    this.element.addEventListener('pointerdown', event => {
-      const countBtn = event.target.closest('[data-counter]');
+  initEventListeners() {
+    // TODO: event "pointerdown" fails tests
+    this.element.addEventListener("click", (event) => {
+      const countBtn = event.target.closest("[data-counter]");
 
       if (countBtn) {
-        const counterContainer = event.target.closest('[data-element="counterContainer"]');
+        const counterContainer = event.target.closest(
+          '[data-element="counterContainer"]',
+        );
         const { id } = counterContainer.dataset;
         const { counter } = countBtn.dataset;
-        const counterBox = counterContainer.querySelector(`[data-element="${id}"]`);
-        const currentValue = counterBox.innerText;
+        const counterBox = counterContainer.querySelector(
+          `[data-element="${id}"]`,
+        );
+        const currentValue = counterBox.innerHTML;
 
-        const value = parseInt(currentValue, 10) + parseInt(counter, 10)
+        const value = parseInt(currentValue, 10) + parseInt(counter, 10);
 
         if (parseInt(counter, 10) > 0) {
-          this.element.dispatchEvent(new CustomEvent('add-to-cart', {
-            detail: this.items[id],
-            bubbles: true
-          }));
+          this.element.dispatchEvent(
+            new CustomEvent("add-to-cart", {
+              detail: this.items[id],
+              bubbles: true,
+            }),
+          );
         } else {
-          this.element.dispatchEvent(new CustomEvent('remove-from-cart', {
-            bubbles: true
-          }));
+          this.element.dispatchEvent(
+            new CustomEvent("remove-from-cart", {
+              bubbles: true,
+            }),
+          );
         }
 
         if (value === 0) {
@@ -73,7 +82,7 @@ export default class Cart {
           counterContainer.remove();
         } else {
           this.items[id].count = value;
-          counterBox.innerText = value;
+          counterBox.innerHTML = value;
           this.updatePrice(this.items[id]);
         }
 
@@ -82,26 +91,30 @@ export default class Cart {
     });
   }
 
-  updatePrice (item) {
-    const counterContainer = this.element.querySelector(`[data-id="${item.id}"]`);
+  updatePrice(item) {
+    const counterContainer = this.element.querySelector(
+      `[data-id="${item.id}"]`,
+    );
 
     if (counterContainer) {
       const price = counterContainer.querySelector('[data-element="price"]');
-      const counter = counterContainer.querySelector(`[data-element="${item.id}"]`);
+      const counter = counterContainer.querySelector(
+        `[data-element="${item.id}"]`,
+      );
 
-      price.innerText = item.price * item.count;
-      counter.innerText = item.count;
+      price.innerHTML = item.price * item.count;
+      counter.innerHTML = item.count;
     }
   }
 
-  add (item = {}) {
+  add(item = {}) {
     const currentItem = this.items[item.id];
 
     if (currentItem) {
       currentItem.count += 1;
       this.updatePrice(currentItem);
     } else {
-      const preparedItem = {...item, count: 1};
+      const preparedItem = { ...item, count: 1 };
       this.items[item.id] = preparedItem;
       const element = this.renderItem(preparedItem);
       this.subElements.list.append(element);
@@ -110,7 +123,7 @@ export default class Cart {
     this.updateTotal();
   }
 
-  updateTotal () {
+  updateTotal() {
     const total = Object.keys(this.items).reduce((accum, key) => {
       const result = accum + this.items[key].count * this.items[key].price;
 
@@ -120,8 +133,8 @@ export default class Cart {
     this.subElements.total.innerHTML = total;
   }
 
-  renderItem (item = {}) {
-    const wrapper = document.createElement('div');
+  renderItem(item = {}) {
+    const wrapper = document.createElement("div");
 
     const template = `
       <li class="item-row" data-element="counterContainer" data-id="${item.id}">
@@ -149,5 +162,17 @@ export default class Cart {
     wrapper.innerHTML = template;
 
     return wrapper.firstElementChild;
+  }
+
+  remove() {
+    if (this.element) {
+      this.element.remove();
+    }
+  }
+
+  destroy() {
+    this.remove();
+    this.element = null;
+    this.subElements = {};
   }
 }
