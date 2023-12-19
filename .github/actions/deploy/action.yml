@@ -43,6 +43,6 @@ runs:
       run: ssh-keyscan ${{ inputs.ssh-host }} >> ~/.ssh/known_hosts
       shell: bash
 
-    - name: Deploy
+    - name: Deploy Client
       run: rsync -vzr --no-perms --no-owner --no-group --delete build/ ${{ inputs.ssh-user }}@${{ inputs.ssh-host }}:/var/www/${{ inputs.target }}
       shell: bash

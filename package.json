@@ -3,14 +3,15 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
-    "start:server": "json-server --watch ./server/db.json --routes ./server/routes.json --port 3001 --",
+    "start:server": "cd server && npm start",
     "start:client": "parcel index.html",
     "build": "NODE_ENV=production parcel build index.html --dist-dir build",
     "start": "concurrently --kill-others 'npm run start:client' 'npm run start:server'",
     "clean": "rimraf output/dist",
     "test": "jest",
     "test:coverage": "npm test -- --coverage",
-    "deploy": "rsync -vzr --no-perms --no-owner --no-group --delete build/ github_ci_bot@159.65.113.178:/var/www/online-store.bootcamp.place"
+    "deploy:server": "rsync -vzr --no-perms --no-owner --no-group --delete server/ github_ci_bot@159.65.113.178:/var/www/online-store.bootcamp.place/server",
+    "deploy:client": "rsync -vzr --no-perms --no-owner --no-group --delete build/ github_ci_bot@159.65.113.178:/var/www/online-store.bootcamp.place/client"
   },
   "author": "",
   "license": "ISC",
