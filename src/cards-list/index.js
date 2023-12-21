@@ -48,7 +48,7 @@ export default class CardsList {
 
       this.subElements.body.replaceChildren(...cards);
     } else {
-      this.subElements.body.innerText = "No products found";
+      this.subElements.body.innerHTML = "No products found";
     }
   }
 

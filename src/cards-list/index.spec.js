@@ -1,6 +1,5 @@
 import Card from "../card/index.js";
 import CardsList from "./index.js";
-// import { products } from "../../fixtures/products.js";
 
 const products = [
   { title: "product 1", rating: 4, price: 100, category: "laptop" },
@@ -52,6 +51,12 @@ describe("CardsList component", () => {
     expect(body).toHaveTextContent(secondProduct.rating);
     expect(body).toHaveTextContent(secondProduct.price);
     expect(body).toHaveTextContent(secondProduct.category);
+  });
+
+  it("should show warning message if products list is empty ", () => {
+    cardsList.update([]);
+
+    expect(cardsList.subElements.body).toHaveTextContent("No products found");
   });
 
   it("should have ability to be destroyed", () => {

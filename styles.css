@@ -84,9 +84,18 @@ p {
   text-transform: uppercase;
   cursor: pointer;
   transition: 0.3s;
-}
-
-.os-btn-primary {
   background-color: #7e72f2;
   color: #fff;
+}
+
+.os-btn-primary.active {
+  background-color: deeppink;
+}
+
+.os-btn-primary.active:hover {
+  background-color: #cb1075;
+}
+
+.os-btn-primary:hover {
+  background-color: #6158be;
 }

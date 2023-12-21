@@ -1,13 +1,27 @@
-export default class Cart {
-  items = {};
+import productStore from "../../storage/store.js";
 
+export default class Cart {
   constructor() {
+    this.productStore = productStore;
+
     this.render();
     this.getSubElements();
+    this.renderItems();
     this.initEventListeners();
   }
 
+  renderItems() {
+    const items = this.productStore.getAll();
+
+    for (const item of Object.values(items)) {
+      const element = this.createItem(item);
+      this.subElements.list.append(element);
+    }
+  }
+
   get template() {
+    const total = this.productStore.getTotal();
+
     return `
       <div class="cart-container">
         <ul class="cart-list" data-element='list'>
@@ -15,7 +29,7 @@ export default class Cart {
         </ul>
         <div class="footer">
           <div class="cart-total">
-            Total: <span data-element="total">0</span>
+            Total: <span data-element="total">${total}</span>
           </div>
           <button class="order-btn os-btn-primary" data-element="orderBtn">Order</button>
         </div>
@@ -55,35 +69,31 @@ export default class Cart {
         );
         const { id } = counterContainer.dataset;
         const { counter } = countBtn.dataset;
-        const counterBox = counterContainer.querySelector(
-          `[data-element="${id}"]`,
-        );
-        const currentValue = counterBox.innerHTML;
 
-        const value = parseInt(currentValue, 10) + parseInt(counter, 10);
-
-        if (parseInt(counter, 10) > 0) {
+        if (counter === "1") {
           this.element.dispatchEvent(
-            new CustomEvent("add-to-cart", {
-              detail: this.items[id],
-              bubbles: true,
-            }),
-          );
-        } else {
-          this.element.dispatchEvent(
-            new CustomEvent("remove-from-cart", {
+            new CustomEvent("increase-counter", {
+              detail: id,
               bubbles: true,
             }),
           );
         }
 
-        if (value === 0) {
-          delete this.items[id];
+        if (counter === "-1") {
+          this.element.dispatchEvent(
+            new CustomEvent("decrease-counter", {
+              detail: id,
+              bubbles: true,
+            }),
+          );
+        }
+
+        const productCount = this.productStore.getProductCount(id);
+
+        if (productCount === 0) {
           counterContainer.remove();
         } else {
-          this.items[id].count = value;
-          counterBox.innerHTML = value;
-          this.updatePrice(this.items[id]);
+          this.updatePrice(id);
         }
 
         this.updateTotal();
@@ -91,49 +101,26 @@ export default class Cart {
     });
   }
 
-  updatePrice(item) {
-    const counterContainer = this.element.querySelector(
-      `[data-id="${item.id}"]`,
-    );
+  updatePrice(id) {
+    const product = this.productStore.get(id);
+    const counterContainer = this.element.querySelector(`[data-id="${id}"]`);
 
     if (counterContainer) {
       const price = counterContainer.querySelector('[data-element="price"]');
-      const counter = counterContainer.querySelector(
-        `[data-element="${item.id}"]`,
-      );
+      const counter = counterContainer.querySelector(`[data-element="${id}"]`);
 
-      price.innerHTML = item.price * item.count;
-      counter.innerHTML = item.count;
+      price.innerHTML = product.price * product.count;
+      counter.innerHTML = product.count;
     }
-  }
-
-  add(item = {}) {
-    const currentItem = this.items[item.id];
-
-    if (currentItem) {
-      currentItem.count += 1;
-      this.updatePrice(currentItem);
-    } else {
-      const preparedItem = { ...item, count: 1 };
-      this.items[item.id] = preparedItem;
-      const element = this.renderItem(preparedItem);
-      this.subElements.list.append(element);
-    }
-
-    this.updateTotal();
   }
 
   updateTotal() {
-    const total = Object.keys(this.items).reduce((accum, key) => {
-      const result = accum + this.items[key].count * this.items[key].price;
-
-      return result;
-    }, 0);
+    const total = this.productStore.getTotal();
 
     this.subElements.total.innerHTML = total;
   }
 
-  renderItem(item = {}) {
+  createItem(item = {}) {
     const wrapper = document.createElement("div");
 
     const template = `

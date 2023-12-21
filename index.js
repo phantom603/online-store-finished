@@ -6,13 +6,14 @@ import Cart from "./src/cart/index.js";
 import Pagination from "./src/pagination/index.js";
 
 import SideBar from "./src/side-bar/index.js";
-import CardsList from "./src/cards-list-v1/index.js";
+import CardsList from "./src/cards-list/index.js";
 
 import Card from "./src/card/index.js";
 import Search from "./src/search/index.js";
 
 import { request } from "./request/index.js";
 import { prepareFilters } from "./prepare-filters/index.js";
+import productStore from "./storage/store.js";
 
 const { BACKEND_URL } = window[Symbol.for("app-config")];
 
@@ -28,6 +29,8 @@ export default class Page {
     this.filters.set("_page", "1");
     this.filters.set("_limit", this.pageLimit);
 
+    this.productStore = productStore;
+
     this.render();
     this.getSubElements();
     this.initializeComponents();
@@ -38,13 +41,16 @@ export default class Page {
   }
 
   get template() {
+    const totalProducts = this.productStore.getProductsCount();
+    const cartBtnClass = totalProducts > 0 ? "" : "hidden";
+
     return `
       <div class="os-container">
         <header class="os-header">
           <span class="os-logo-text">Online Store</span>
           <button class="cart-btn os-btn-primary" data-element="cartBtn">
             <i class="bi bi-cart"></i>
-            Cart <span class="hidden cart-count" data-element="cartCounter">0</span>
+            Cart <span class="${cartBtnClass} cart-count" data-element="cartCounter">${totalProducts}</span>
           </button>
         </header>
 
@@ -115,12 +121,6 @@ export default class Page {
     const sideBar = new SideBar();
     const pagination = new Pagination();
 
-    const cart = new Cart();
-    const modal = new Modal(cart);
-
-    this.modal = modal;
-    this.cart = cart;
-
     this.components = {
       search,
       cardsList,
@@ -155,30 +155,32 @@ export default class Page {
 
   initEventListeners() {
     this.subElements.cartBtn.addEventListener("pointerdown", () => {
+      const cart = new Cart();
+      this.modal = new Modal(cart);
+
       this.modal.open();
     });
 
-    document.addEventListener("add-to-cart", (event) => {
-      this.cart.add(event.detail);
-
+    document.addEventListener("added-to-cart", () => {
+      const productsCount = this.productStore.getProductsCount();
       const { cartCounter } = this.subElements;
-      const value = cartCounter.innerText;
 
       cartCounter.classList.remove("hidden");
-      cartCounter.innerText = parseInt(value, 10) + 1;
+      cartCounter.innerText = productsCount;
     });
 
-    document.addEventListener("remove-from-cart", () => {
+    document.addEventListener("removed-from-cart", () => {
       const { cartCounter } = this.subElements;
-      const value = cartCounter.innerText;
-      const total = parseInt(value, 10) - 1;
+      const productsCount = this.productStore.getProductsCount();
 
-      if (total === 0) {
+      if (productsCount === 0) {
         cartCounter.classList.add("hidden");
+        cartCounter.innerText = 0;
+      } else {
+        cartCounter.innerText = productsCount;
       }
-
-      cartCounter.innerText = total;
     });
+
     this.components.search.element.addEventListener(
       "search-filter",
       (event) => {
@@ -281,7 +283,17 @@ export default class Page {
       page: this.filters.get("_page"),
     });
 
-    return await response.json();
+    const products = await response.json();
+    // NOTE: sync backend data with local stored data
+    const productsFromStore = this.productStore.getAll();
+
+    for (const product of products) {
+      if (productsFromStore[product.id]) {
+        product.inStore = true;
+      }
+    }
+
+    return products;
   }
 
   remove() {

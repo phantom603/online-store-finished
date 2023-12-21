@@ -11,12 +11,28 @@
     <link rel="stylesheet" href="cart-style.css" />
   </head>
   <body>
-    <!-- <button id="addBtn">Add item</button> -->
+    <button id="addBtn">add product</button>
     <div id="root"></div>
 
     <script type="module">
       import Cart from "./index.js";
-      import { products } from "../../fixtures/products.js";
+
+      window.localStorage.clear();
+
+      const products = [
+        {
+          id: "1",
+          images: [],
+          title: "Ноутбук Acer Aspire 3",
+          price: 100,
+        },
+        {
+          id: "2",
+          images: [],
+          title: "Ноутбук Acer Aspire 7",
+          price: 200,
+        },
+      ];
 
       const cart = new Cart();
 
@@ -26,9 +42,18 @@
 
       root.append(cart.element);
 
-      // addBtn.addEventListener("pointerdown", () => {
-      //   cart.add(products[0]);
-      // });
+      addBtn.addEventListener("click", () => {
+        const product = {
+          id: products.length + 1,
+          images: [],
+          title: "new product",
+          price: 100,
+        };
+
+        products.push(product);
+
+        cart.add(product);
+      });
     </script>
   </body>
 </html>

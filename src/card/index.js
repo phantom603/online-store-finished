@@ -9,6 +9,7 @@ export default class Card {
     price: 0,
     category: "",
     brand: "",
+    inStore: false,
   };
 
   constructor(data = {}) {
@@ -39,11 +40,21 @@ export default class Card {
         </div>
 
         <footer class="os-product-footer">
-          <button class="os-btn-primary" data-element="addToCartBtn">
-            Add To Cart
-          </button>
+          ${this.footer}
         </footer>
       </div>
+    `;
+  }
+
+  get footer() {
+    const { inStore } = this.data;
+    const labelValue = inStore ? "Remove from cart" : "Add to cart";
+    const classValue = inStore ? "active" : "";
+
+    return `
+      <button class="os-btn-primary ${classValue}" data-element="addToCartBtn" type="button">
+        ${labelValue}
+      </button>
     `;
   }
 
@@ -56,9 +67,51 @@ export default class Card {
   }
 
   addEventListeners() {
-    this.subElements.addToCartBtn.addEventListener("pointerdown", () => {
-      this.dispatchEvent("add-to-cart", this.data);
+    const { addToCartBtn } = this.subElements;
+
+    addToCartBtn.addEventListener("pointerdown", () => {
+      if (this.data.inStore) {
+        this.dispatchEvent("remove-from-cart", this.data);
+        this.subElements.addToCartBtn.innerHTML = "Add to cart";
+        addToCartBtn.classList.remove("active");
+
+        this.data.inStore = false;
+      } else {
+        this.dispatchEvent("add-to-cart", this.data);
+        this.subElements.addToCartBtn.innerHTML = "Remove from cart";
+        addToCartBtn.classList.add("active");
+
+        this.data.inStore = true;
+      }
     });
+
+    document.addEventListener("added-to-cart", (event) => {
+      if (event.detail === this.data.id) {
+        this.subElements.addToCartBtn.innerHTML = "Remove from cart";
+        addToCartBtn.classList.add("active");
+      }
+    });
+
+    document.addEventListener("removed-from-cart", (event) => {
+      if (event.detail === this.data.id) {
+        // this.toggle();
+        this.subElements.addToCartBtn.innerHTML = "Add to cart";
+        addToCartBtn.classList.remove("active");
+      }
+    });
+  }
+
+  toggle() {
+    const { addToCartBtn } = this.subElements;
+
+    if (this.data.inStore) {
+      this.subElements.addToCartBtn.innerHTML = "Remove from cart";
+      addToCartBtn.classList.add("active");
+    } else {
+      this.subElements.addToCartBtn.innerHTML = "Add to cart";
+      addToCartBtn.classList.remove("active");
+    }
+    this.data.inStore = !this.data.inStore;
   }
 
   dispatchEvent(type = "", payload = {}) {
