@@ -104,7 +104,7 @@ export default class Cart {
     this.subElements.clearCartBtn.addEventListener("click", () => {
       this.productStore.removeAll();
       this.subElements.list.innerHTML = "";
-      this.subElements.total.innerHTML = "";
+      this.subElements.total.innerHTML = 0;
     });
   }
 
