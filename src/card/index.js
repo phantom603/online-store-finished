@@ -72,46 +72,32 @@ export default class Card {
     addToCartBtn.addEventListener("pointerdown", () => {
       if (this.data.inStore) {
         this.dispatchEvent("remove-from-cart", this.data);
-        this.subElements.addToCartBtn.innerHTML = "Add to cart";
-        addToCartBtn.classList.remove("active");
-
-        this.data.inStore = false;
+        this.removeActive();
       } else {
         this.dispatchEvent("add-to-cart", this.data);
-        this.subElements.addToCartBtn.innerHTML = "Remove from cart";
-        addToCartBtn.classList.add("active");
-
-        this.data.inStore = true;
-      }
-    });
-
-    document.addEventListener("added-to-cart", (event) => {
-      if (event.detail === this.data.id) {
-        this.subElements.addToCartBtn.innerHTML = "Remove from cart";
-        addToCartBtn.classList.add("active");
+        this.setActive();
       }
     });
 
     document.addEventListener("removed-from-cart", (event) => {
       if (event.detail === this.data.id) {
-        // this.toggle();
-        this.subElements.addToCartBtn.innerHTML = "Add to cart";
-        addToCartBtn.classList.remove("active");
+        this.removeActive();
       }
     });
   }
 
-  toggle() {
+  setActive() {
     const { addToCartBtn } = this.subElements;
+    this.subElements.addToCartBtn.innerHTML = "Remove from cart";
+    addToCartBtn.classList.add("active");
+    this.data.inStore = true;
+  }
 
-    if (this.data.inStore) {
-      this.subElements.addToCartBtn.innerHTML = "Remove from cart";
-      addToCartBtn.classList.add("active");
-    } else {
-      this.subElements.addToCartBtn.innerHTML = "Add to cart";
-      addToCartBtn.classList.remove("active");
-    }
-    this.data.inStore = !this.data.inStore;
+  removeActive() {
+    const { addToCartBtn } = this.subElements;
+    this.subElements.addToCartBtn.innerHTML = "Add to cart";
+    addToCartBtn.classList.remove("active");
+    this.data.inStore = false;
   }
 
   dispatchEvent(type = "", payload = {}) {

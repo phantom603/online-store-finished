@@ -80,7 +80,11 @@ class ProductStore {
   }
 
   removeAll() {
-    this.storage.removeAll();
+    const items = this.getAll();
+
+    for (const item of Object.values(items)) {
+      this.remove(item.id);
+    }
   }
 
   getProductPrice(id = "") {

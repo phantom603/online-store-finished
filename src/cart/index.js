@@ -31,7 +31,8 @@ export default class Cart {
           <div class="cart-total">
             Total: <span data-element="total">${total}</span>
           </div>
-          <button class="order-btn os-btn-primary" data-element="orderBtn">Order</button>
+          <button class="order-btn os-btn-primary" data-element="clearCartBtn">Clear Cart</button>
+          <!--<button class="" data-element="orderBtn">Order</button>-->
         </div>
       </div>
     `;
@@ -98,6 +99,12 @@ export default class Cart {
 
         this.updateTotal();
       }
+    });
+
+    this.subElements.clearCartBtn.addEventListener("click", () => {
+      this.productStore.removeAll();
+      this.subElements.list.innerHTML = "";
+      this.subElements.total.innerHTML = "";
     });
   }
 
