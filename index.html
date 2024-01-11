@@ -32,7 +32,8 @@
     <script type="module">
       import Page from "./index.js";
 
-      const page = new Page();
+      const { BACKEND_URL } = window[Symbol.for("app-config")];
+      const page = new Page(BACKEND_URL);
 
       root.append(page.element);
     </script>

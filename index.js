@@ -15,8 +15,6 @@ import { request } from "./request/index.js";
 import { prepareFilters } from "./prepare-filters/index.js";
 import productStore from "./storage/store.js";
 
-const { BACKEND_URL } = window[Symbol.for("app-config")];
-
 export default class Page {
   element;
   subElements = {};
@@ -24,8 +22,10 @@ export default class Page {
   pageLimit = 9;
   totalPages = 100;
   filters = new URLSearchParams();
+  BACKEND_URL = "";
 
-  constructor() {
+  constructor(url = "") {
+    this.BACKEND_URL = url;
     this.filters.set("_page", "1");
     this.filters.set("_limit", this.pageLimit);
 
@@ -78,7 +78,7 @@ export default class Page {
   }
 
   async makeRequest(path = "") {
-    const url = new URL(path, BACKEND_URL);
+    const url = new URL(path, this.BACKEND_URL);
 
     const [data, error] = await request(url);
 
@@ -267,11 +267,11 @@ export default class Page {
   }
 
   async loadProducts() {
-    const url = new URL("products", BACKEND_URL);
+    const url = new URL("products", this.BACKEND_URL);
 
     url.search = this.filters;
 
-    const response = await fetch(url);
+    const response = await fetch(url.toString());
     const totalPages = parseInt(response.headers.get("X-Total-Count"), 10);
 
     if (totalPages > this.totalPages) {
