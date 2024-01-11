@@ -126,12 +126,17 @@ export default class SideBar {
         component.reset();
       }
 
-      this.element.dispatchEvent(
-        new CustomEvent("clear-filters", {
-          bubbles: true,
-        }),
-      );
+      this.dispatchEvent("clear-filters");
     });
+  }
+
+  dispatchEvent(eventName = "", detail = {}) {
+    this.element.dispatchEvent(
+      new CustomEvent(eventName, {
+        bubbles: true,
+        detail,
+      }),
+    );
   }
 
   remove() {

@@ -26,8 +26,9 @@ export default class FiltersList {
       return `<div class="os-filters-panel-item">
         <div class="os-form-checkbox">
           <input id="${item.value}"
-            type="checkbox" name="filter" value="${item.value}" ${item.checked ? "checked" : ""
-        }>
+            type="checkbox" name="filter" value="${item.value}" ${
+              item.checked ? "checked" : ""
+            }>
           <label for="${item.value}">${item.title}</label>
         </div>
       </div>`;
@@ -72,13 +73,17 @@ export default class FiltersList {
       const { target } = event;
       const eventName = target.checked ? "add-filter" : "remove-filter";
 
-      this.element.dispatchEvent(
-        new CustomEvent(eventName, {
-          bubbles: true,
-          detail: target.value,
-        }),
-      );
+      this.dispatchEvent(eventName, target.value);
     });
+  }
+
+  dispatchEvent(eventName = "", detail) {
+    this.element.dispatchEvent(
+      new CustomEvent(eventName, {
+        bubbles: true,
+        detail,
+      }),
+    );
   }
 
   remove() {

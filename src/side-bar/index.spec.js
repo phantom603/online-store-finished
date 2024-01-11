@@ -20,6 +20,59 @@ describe("SideBar", () => {
     expect(sideBar.element).toBeVisible();
   });
 
+  it("should call 'add-filter' event with selected category value", () => {
+    const { categoriesFilter } = sideBar.subElements;
+    const [firsFilter] = categoryFilterConfig;
+
+    const filterElement = categoriesFilter.querySelector(
+      `[value='${firsFilter.value}']`,
+    );
+
+    const mockDispatchEvent = jest.spyOn(
+      sideBar.components.categoriesFilter,
+      "dispatchEvent",
+    );
+
+    filterElement.click();
+
+    expect(mockDispatchEvent).toHaveBeenCalled();
+    expect(mockDispatchEvent).toHaveBeenCalledWith(
+      "add-filter",
+      firsFilter.value,
+    );
+  });
+
+  it("should call 'add-filter' event with selected brand value", () => {
+    const { brandFilter } = sideBar.subElements;
+    const [firsFilter] = brandFilterConfig;
+
+    const filterElement = brandFilter.querySelector(
+      `[value='${firsFilter.value}']`,
+    );
+
+    const mockDispatchEvent = jest.spyOn(
+      sideBar.components.brandFilter,
+      "dispatchEvent",
+    );
+
+    filterElement.click();
+
+    expect(mockDispatchEvent).toHaveBeenCalled();
+    expect(mockDispatchEvent).toHaveBeenCalledWith(
+      "add-filter",
+      firsFilter.value,
+    );
+  });
+
+  it("should call event 'clear-filters'", () => {
+    const { clearFilters } = sideBar.subElements;
+    const mockDispatchEvent = jest.spyOn(sideBar, "dispatchEvent");
+
+    clearFilters.dispatchEvent(new CustomEvent("pointerdown"));
+
+    expect(mockDispatchEvent).toHaveBeenCalledWith("clear-filters");
+  });
+
   it("should have ability to be destroyed", () => {
     sideBar.destroy();
 
