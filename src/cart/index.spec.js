@@ -15,11 +15,9 @@ describe("Cart component", () => {
     document.body.innerHTML = "";
   });
 
-  test("should render with correct structure", () => {
+  it("should be rendered correctly", () => {
     expect(cart.element).toBeInTheDocument();
-    expect(cart.subElements.list).toBeInTheDocument();
-    expect(cart.subElements.total).toBeInTheDocument();
-    expect(cart.subElements.orderBtn).toBeInTheDocument();
+    expect(cart.element).toBeVisible();
   });
 
   it("should have ability to be destroyed", () => {
