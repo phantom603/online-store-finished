@@ -51,6 +51,15 @@ describe("Page", () => {
     expect(page.element).toBeVisible();
   });
 
+  it("should show modal cart", async () => {
+    const { cartBtn } = page.subElements;
+
+    cartBtn.dispatchEvent(new CustomEvent("pointerdown"));
+
+    expect(page.modal.element).toBeInTheDocument();
+    expect(page.modal.element).toBeVisible();
+  });
+
   it("should have ability to be destroyed", () => {
     page.destroy();
 
