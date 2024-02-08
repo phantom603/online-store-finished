@@ -6,8 +6,6 @@ import router from "./router/index.js";
 const app = new App();
 const root = document.getElementById("root");
 
-root.append(app.element);
-
 router
   .addRoute({
     pattern: /^$/,
@@ -17,7 +15,6 @@ router
     pattern: /^payment-status$/,
     path: "payment-status",
   })
-
   .listen();
 
 root.append(app.element);

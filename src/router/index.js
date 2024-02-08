@@ -60,8 +60,8 @@ export class Router {
     history.pushState(...args);
   }
 
-  addRoute({ pattern, path, canLoad = () => true } = {}) {
-    this.routes.push({ pattern, path, canLoad });
+  addRoute({ pattern, path } = {}) {
+    this.routes.push({ pattern, path });
     return this;
   }
 
@@ -90,13 +90,11 @@ export class Router {
       match = this.strippedPath.match(route.pattern);
 
       if (match) {
-        if (route.canLoad()) {
-          this.page = await this.changePage(
-            route.path,
-            match,
-            window.location.search,
-          );
-        }
+        this.page = await this.changePage(
+          route.path,
+          match,
+          window.location.search,
+        );
       }
     }
 
