@@ -1,12 +1,15 @@
-
 export default class DoubleSlider {
   element;
   subElements = {};
 
-  onThumbPointerMove = event => {
+  onThumbPointerMove = (event) => {
     event.preventDefault();
 
-    const { left: innerLeft, right: innerRight, width } = this.subElements.inner.getBoundingClientRect();
+    const {
+      left: innerLeft,
+      right: innerRight,
+      width,
+    } = this.subElements.inner.getBoundingClientRect();
 
     if (this.dragging === this.subElements.thumbLeft) {
       let newLeft = (event.clientX - innerLeft + this.shiftX) / width;
@@ -22,7 +25,8 @@ export default class DoubleSlider {
         newLeft = 100 - right;
       }
 
-      this.dragging.style.left = this.subElements.progress.style.left = newLeft + '%';
+      this.dragging.style.left = this.subElements.progress.style.left =
+        newLeft + "%";
       this.subElements.from.innerHTML = this.formatValue(this.getValue().from);
     }
 
@@ -39,36 +43,39 @@ export default class DoubleSlider {
       if (left + newRight > 100) {
         newRight = 100 - left;
       }
-      this.dragging.style.right = this.subElements.progress.style.right = newRight + '%';
+      this.dragging.style.right = this.subElements.progress.style.right =
+        newRight + "%";
       this.subElements.to.innerHTML = this.formatValue(this.getValue().to);
     }
   };
 
   onThumbPointerUp = () => {
-    this.element.classList.remove('range-slider_dragging');
+    this.element.classList.remove("range-slider_dragging");
 
-    document.removeEventListener('pointermove', this.onThumbPointerMove);
-    document.removeEventListener('pointerup', this.onThumbPointerUp);
+    document.removeEventListener("pointermove", this.onThumbPointerMove);
+    document.removeEventListener("pointerup", this.onThumbPointerUp);
 
-    this.element.dispatchEvent(new CustomEvent('range-selected', {
-      bubbles: true,
-      detail: {
-        filterName: this.filterName,
-        value: this.getValue()
-      }
-    }));
+    this.element.dispatchEvent(
+      new CustomEvent("range-selected", {
+        bubbles: true,
+        detail: {
+          filterName: this.filterName,
+          value: this.getValue(),
+        },
+      }),
+    );
   };
 
   constructor({
     min = 100,
     max = 200,
-    formatValue = value => value,
+    formatValue = (value) => value,
     selected = {
       from: min,
-      to: max
+      to: max,
     },
     precision = 0,
-    filterName = ''
+    filterName = "",
   } = {}) {
     this.min = min;
     this.max = max;
@@ -95,7 +102,7 @@ export default class DoubleSlider {
   }
 
   render() {
-    const element = document.createElement('div');
+    const element = document.createElement("div");
 
     element.innerHTML = this.template;
 
@@ -112,13 +119,17 @@ export default class DoubleSlider {
   initEventListeners() {
     const { thumbLeft, thumbRight } = this.subElements;
 
-    thumbLeft.addEventListener('pointerdown', event => this.onThumbPointerDown(event));
-    thumbRight.addEventListener('pointerdown', event => this.onThumbPointerDown(event));
+    thumbLeft.addEventListener("pointerdown", (event) =>
+      this.onThumbPointerDown(event),
+    );
+    thumbRight.addEventListener("pointerdown", (event) =>
+      this.onThumbPointerDown(event),
+    );
   }
 
   getSubElements(element) {
     const result = {};
-    const elements = element.querySelectorAll('[data-element]');
+    const elements = element.querySelectorAll("[data-element]");
 
     for (const subElement of elements) {
       const name = subElement.dataset.element;
@@ -135,14 +146,14 @@ export default class DoubleSlider {
 
   destroy() {
     this.remove();
-    document.removeEventListener('pointermove', this.onThumbPointerMove);
-    document.removeEventListener('pointerup', this.onThumbPointerUp);
+    document.removeEventListener("pointermove", this.onThumbPointerMove);
+    document.removeEventListener("pointerup", this.onThumbPointerUp);
   }
 
   update(from = this.selected.from, to = this.selected.to) {
     const rangeTotal = this.max - this.min;
-    const left = Math.floor((from - this.min) / rangeTotal * 100) + '%';
-    const right = Math.floor((this.max - to) / rangeTotal * 100) + '%';
+    const left = Math.floor(((from - this.min) / rangeTotal) * 100) + "%";
+    const right = Math.floor(((this.max - to) / rangeTotal) * 100) + "%";
 
     this.subElements.progress.style.left = left;
     this.subElements.progress.style.right = right;
@@ -169,10 +180,10 @@ export default class DoubleSlider {
 
     this.dragging = thumbElem;
 
-    this.element.classList.add('range-slider_dragging');
+    this.element.classList.add("range-slider_dragging");
 
-    document.addEventListener('pointermove', this.onThumbPointerMove);
-    document.addEventListener('pointerup', this.onThumbPointerUp);
+    document.addEventListener("pointermove", this.onThumbPointerMove);
+    document.addEventListener("pointerup", this.onThumbPointerUp);
   }
 
   getValue() {
@@ -180,11 +191,13 @@ export default class DoubleSlider {
     const { left } = this.subElements.thumbLeft.style;
     const { right } = this.subElements.thumbRight.style;
 
-    const leftShift = parseFloat(left) * rangeTotal / 100;
-    const rightShift = parseFloat(right) * rangeTotal / 100;
+    const leftShift = (parseFloat(left) * rangeTotal) / 100;
+    const rightShift = (parseFloat(right) * rangeTotal) / 100;
 
-    const from = Math.round((this.min + leftShift) * this.precision) / this.precision;
-    const to = Math.round((this.max - rightShift) * this.precision) / this.precision;
+    const from =
+      Math.round((this.min + leftShift) * this.precision) / this.precision;
+    const to =
+      Math.round((this.max - rightShift) * this.precision) / this.precision;
 
     return { from, to };
   }
@@ -192,7 +205,7 @@ export default class DoubleSlider {
   reset() {
     this.selected = {
       from: this.min,
-      to: this.max
+      to: this.max,
     };
 
     this.update();

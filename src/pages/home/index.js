@@ -1,19 +1,19 @@
-import "./config.js";
+// import "../config.js";
 
-import Modal from "./src/modal/index.js";
+import Modal from "../../components/modal/index.js";
 
-import Cart from "./src/cart/index.js";
-import Pagination from "./src/pagination/index.js";
+import Cart from "../../components/cart/index.js";
+import Pagination from "../../components/pagination/index.js";
 
-import SideBar from "./src/side-bar/index.js";
-import CardsList from "./src/cards-list/index.js";
+import SideBar from "../../components/side-bar/index.js";
+import CardsList from "../../components/cards-list/index.js";
 
-import Card from "./src/card/index.js";
-import Search from "./src/search/index.js";
+import Card from "../../components/card/index.js";
+import Search from "../../components/search/index.js";
 
-import { request } from "./request/index.js";
-import { prepareFilters } from "./prepare-filters/index.js";
-import productStore from "./storage/store.js";
+import { request } from "../../../request/index.js";
+import { prepareFilters } from "../../../prepare-filters/index.js";
+import productStore from "../../../storage/store.js";
 
 export default class Page {
   element;
@@ -272,6 +272,9 @@ export default class Page {
     url.search = this.filters;
 
     const response = await fetch(url.toString());
+
+    console.log("response", response.headers);
+
     const totalPages = parseInt(response.headers.get("X-Total-Count"), 10);
 
     if (totalPages > this.totalPages) {

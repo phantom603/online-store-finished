@@ -1,4 +1,4 @@
-import productStore from "../../storage/store.js";
+import productStore from "../../../storage/store.js";
 
 export default class Cart {
   constructor() {
