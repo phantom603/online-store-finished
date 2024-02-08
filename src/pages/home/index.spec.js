@@ -20,6 +20,14 @@ const products = [
 describe("Page", () => {
   let page;
 
+  beforeAll(() => {
+    window[Symbol.for("app-config")] = {
+      BACKEND_URL: "http://example.com/",
+    };
+  });
+  afterAll(() => {
+    window[Symbol.for("app-config")] = {};
+  });
   beforeEach(() => {
     fetchMock.mockResponses(
       [JSON.stringify(categories), { status: 200 }],
@@ -34,7 +42,8 @@ describe("Page", () => {
         },
       ],
     );
-    page = new Page("http://example.com/");
+
+    page = new Page();
 
     document.body.append(page.element);
   });

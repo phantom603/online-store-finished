@@ -1,4 +1,4 @@
-export const request = async (url = '', props = {}) => {
+export const httpRequest = async (url = "", props = {}) => {
   try {
     const response = await fetch(url.toString(), props);
     const data = await response.json();

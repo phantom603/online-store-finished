@@ -1,3 +1,5 @@
+import "./filter-list-style.css";
+
 export default class FiltersList {
   element;
   subElements = {};

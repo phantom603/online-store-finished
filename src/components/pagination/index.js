@@ -1,3 +1,5 @@
+import "./pagination-style.css";
+
 export default class Pagination {
   element;
   start = 0;
@@ -132,8 +134,9 @@ export default class Pagination {
         const isActive = index === this.pageIndex ? "active" : "";
 
         return `<li>
-        <a href="#" data-element="page-link" class="page-link ${isActive}" data-page-index="${index}">${index + 1
-          }</a>
+        <a href="#" data-element="page-link" class="page-link ${isActive}" data-page-index="${index}">${
+          index + 1
+        }</a>
       </li>`;
       })
       .join("");

@@ -1,5 +1,7 @@
 import { debounce } from "./debounce/index.js";
 
+import "./search-style.css";
+
 export default class Search {
   element;
   subElements = {};

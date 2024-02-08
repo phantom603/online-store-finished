@@ -1,3 +1,5 @@
+import "./card-list-style.css";
+
 export default class CardsList {
   element;
   subElements = {};

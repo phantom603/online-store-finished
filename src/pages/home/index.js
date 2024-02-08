@@ -1,5 +1,3 @@
-// import "../config.js";
-
 import Modal from "../../components/modal/index.js";
 
 import Cart from "../../components/cart/index.js";
@@ -11,9 +9,9 @@ import CardsList from "../../components/cards-list/index.js";
 import Card from "../../components/card/index.js";
 import Search from "../../components/search/index.js";
 
-import { request } from "../../../request/index.js";
-import { prepareFilters } from "../../../prepare-filters/index.js";
-import productStore from "../../../storage/store.js";
+import { prepareFilters } from "../../prepare-filters/index.js";
+import productStore from "../../storage/store.js";
+import { httpRequest } from "../../request/index.js";
 
 export default class Page {
   element;
@@ -24,8 +22,9 @@ export default class Page {
   filters = new URLSearchParams();
   BACKEND_URL = "";
 
-  constructor(url = "") {
-    this.BACKEND_URL = url;
+  constructor() {
+    this.BACKEND_URL = window[Symbol.for("app-config")].BACKEND_URL;
+
     this.filters.set("_page", "1");
     this.filters.set("_limit", this.pageLimit);
 
@@ -52,6 +51,7 @@ export default class Page {
             <i class="bi bi-cart"></i>
             Cart <span class="${cartBtnClass} cart-count" data-element="cartCounter">${totalProducts}</span>
           </button>
+          <a href="/payment-status">Payment status</a>
         </header>
 
         <main class="os-products">
@@ -79,8 +79,7 @@ export default class Page {
 
   async makeRequest(path = "") {
     const url = new URL(path, this.BACKEND_URL);
-
-    const [data, error] = await request(url);
+    const [data, error] = await httpRequest(url);
 
     if (data) {
       return Promise.resolve(data);
@@ -272,9 +271,6 @@ export default class Page {
     url.search = this.filters;
 
     const response = await fetch(url.toString());
-
-    console.log("response", response.headers);
-
     const totalPages = parseInt(response.headers.get("X-Total-Count"), 10);
 
     if (totalPages > this.totalPages) {

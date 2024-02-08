@@ -1,3 +1,5 @@
+import "./modal-style.css";
+
 export default class Modal {
   subElements = {};
   status = "closed";

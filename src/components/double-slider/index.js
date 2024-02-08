@@ -1,3 +1,5 @@
+import "./double-slider-style.css";
+
 export default class DoubleSlider {
   element;
   subElements = {};

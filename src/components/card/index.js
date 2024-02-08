@@ -1,3 +1,5 @@
+import "./card-style.css";
+
 export default class Card {
   element;
 

@@ -1,6 +1,8 @@
 import FiltersList from "../filters-list/index.js";
 import DoubleSlider from "../double-slider/index.js";
 
+import "./side-bar-style.css";
+
 export default class SideBar {
   element;
   subElements = {};
