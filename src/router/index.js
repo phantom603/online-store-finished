@@ -95,6 +95,7 @@ export class Router {
           match,
           window.location.search,
         );
+        break;
       }
     }
 
