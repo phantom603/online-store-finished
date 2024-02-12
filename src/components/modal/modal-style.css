@@ -7,18 +7,18 @@
   top: 0;
   position: fixed;
   z-index: 100;
-  background: rgba(0,0,0, 0.4); /* Fallback color */
+  background: rgba(0, 0, 0, 0.4); /* Fallback color */
 }
 
 .modal.hidden {
- display: none;
+  display: none;
 }
 
 .modal__content {
   position: fixed;
   overflow-y: scroll;
-  width: calc(100% - 80px);
-  height: calc(100% - 80px);
+  /* width: calc(100% - 80px); */
+  /* height: calc(100% - 80px); */
   background-color: #fefefe;
   z-index: 200;
 }

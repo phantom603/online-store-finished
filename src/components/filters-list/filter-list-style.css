@@ -1,14 +1,14 @@
 .os-form-group {
   padding-top: 20px;
-  padding-bottom: 20px
+  padding-bottom: 20px;
 }
 
 .os-form-group.divider {
-  border-bottom: 1px solid #d6d6d6
+  border-bottom: 1px solid #d6d6d6;
 }
 
 .os-form-checkbox > input {
-  display: none
+  display: none;
 }
 
 .os-form-checkbox > input:checked + label::before {
@@ -25,7 +25,7 @@
   font-size: 1rem;
   font-weight: 300;
   color: #2c2c2c;
-  cursor: pointer
+  cursor: pointer;
 }
 
 .os-form-checkbox > label::before {
@@ -33,22 +33,22 @@
   flex-shrink: 0;
   display: inline-block;
   margin-right: 12px;
-  border: 1px solid #979797
+  border: 1px solid #979797;
 }
 
 .os-form-checkbox > label::before {
-  width: 20px;
-  height: 17px;
-  border-radius: 3px
+  width: 22px;
+  height: 19px;
+  border-radius: 3px;
 }
 
 .os-filters-panel-item {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px
+  margin-bottom: 10px;
 }
 
 .os-filters-panel-item .os-form-checkbox {
-  margin-bottom: 0
+  margin-bottom: 0;
 }

@@ -9,7 +9,6 @@ export default class Pagination {
   constructor({ totalPages = 10, page = 1 } = {}) {
     this.totalPages = totalPages;
     this.pageIndex = page - 1;
-
     this.initialize();
   }
 
@@ -134,10 +133,12 @@ export default class Pagination {
         const isActive = index === this.pageIndex ? "active" : "";
 
         return `<li>
-        <a href="#" data-element="page-link" class="page-link ${isActive}" data-page-index="${index}">${
-          index + 1
-        }</a>
-      </li>`;
+          <button href="#" 
+            data-element="page-link" 
+            class="page-link ${isActive}" data-page-index="${index}">${
+              index + 1
+            }</button>
+        </li>`;
       })
       .join("");
   }

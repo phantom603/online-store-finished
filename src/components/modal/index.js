@@ -30,9 +30,6 @@ export default class Modal {
   get template() {
     return `<div class="modal hidden">
       <div class="modal__content" data-element="modalContainer">
-        <div class="close-header">
-          <i class="bi bi-x-lg" data-element="closeBtn"></i>
-        </div>
         <div data-element="content">
 
         </div>
@@ -79,10 +76,6 @@ export default class Modal {
   addEventListeners() {
     document.addEventListener("keydown", this.onDocumentKeyDown);
     document.addEventListener("pointerdown", this.onDocumentClick, true);
-
-    this.subElements.closeBtn.addEventListener("pointerdown", () => {
-      this.close();
-    });
   }
 
   removeEventListeners() {

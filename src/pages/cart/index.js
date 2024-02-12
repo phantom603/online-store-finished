@@ -1,12 +1,20 @@
-export default class Page {
+import Cart from "../../components/cart";
+
+export default class CartPage {
+  components = {};
+
   constructor() {
+    this.components.cart = new Cart();
+
     this.render();
+
+    this.element.append(this.components.cart.element);
   }
 
   get template() {
     return `<div>
-      <h2 class="app-page-title">404 Page</h2> 
-      <a href="/">go to home</a>
+      <h2 class="app-page-title">Cart Page</h2> 
+
     </div>`;
   }
 

@@ -12,8 +12,20 @@ router
     path: "home",
   })
   .addRoute({
+    pattern: /^home$/,
+    path: "home",
+  })
+  .addRoute({
+    pattern: /^cart$/,
+    path: "cart",
+  })
+  .addRoute({
     pattern: /^payment-status$/,
     path: "payment-status",
+  })
+  .addRoute({
+    pattern: /^create-product$/,
+    path: "create-product",
   })
   .listen();
 

@@ -1,6 +1,3 @@
-import Modal from "../../components/modal/index.js";
-
-import Cart from "../../components/cart/index.js";
 import Pagination from "../../components/pagination/index.js";
 
 import SideBar from "../../components/side-bar/index.js";
@@ -13,6 +10,8 @@ import { prepareFilters } from "../../prepare-filters/index.js";
 import productStore from "../../storage/store.js";
 import { httpRequest } from "../../request/index.js";
 
+import "./home.css";
+
 export default class Page {
   element;
   subElements = {};
@@ -21,6 +20,7 @@ export default class Page {
   totalPages = 100;
   filters = new URLSearchParams();
   BACKEND_URL = "";
+  abortController = new AbortController();
 
   constructor() {
     this.BACKEND_URL = window[Symbol.for("app-config")].BACKEND_URL;
@@ -46,12 +46,13 @@ export default class Page {
     return `
       <div class="os-container">
         <header class="os-header">
-          <span class="os-logo-text">Online Store</span>
-          <button class="cart-btn os-btn-primary" data-element="cartBtn">
-            <i class="bi bi-cart"></i>
-            Cart <span class="${cartBtnClass} cart-count" data-element="cartCounter">${totalProducts}</span>
-          </button>
-          <a href="/payment-status">Payment status</a>
+          <h2 class="app-page-title">Home Page</h2>
+          <a href="/cart">
+            <button class="cart-btn os-btn-primary" data-element="cartBtn">
+              <i class="bi bi-cart"></i>
+              Cart <span class="${cartBtnClass} cart-count" data-element="cartCounter">${totalProducts}</span>
+            </button>
+          </a>
         </header>
 
         <main class="os-products">
@@ -153,32 +154,33 @@ export default class Page {
   }
 
   initEventListeners() {
-    this.subElements.cartBtn.addEventListener("pointerdown", () => {
-      const cart = new Cart();
-      this.modal = new Modal(cart);
+    document.addEventListener(
+      "added-to-cart",
+      () => {
+        const productsCount = this.productStore.getProductsCount();
+        const { cartCounter } = this.subElements;
 
-      this.modal.open();
-    });
-
-    document.addEventListener("added-to-cart", () => {
-      const productsCount = this.productStore.getProductsCount();
-      const { cartCounter } = this.subElements;
-
-      cartCounter.classList.remove("hidden");
-      cartCounter.innerText = productsCount;
-    });
-
-    document.addEventListener("removed-from-cart", () => {
-      const { cartCounter } = this.subElements;
-      const productsCount = this.productStore.getProductsCount();
-
-      if (productsCount === 0) {
-        cartCounter.classList.add("hidden");
-        cartCounter.innerText = 0;
-      } else {
+        cartCounter.classList.remove("hidden");
         cartCounter.innerText = productsCount;
-      }
-    });
+      },
+      { signal: this.abortController.signal },
+    );
+
+    document.addEventListener(
+      "removed-from-cart",
+      () => {
+        const { cartCounter } = this.subElements;
+        const productsCount = this.productStore.getProductsCount();
+
+        if (productsCount === 0) {
+          cartCounter.classList.add("hidden");
+          cartCounter.innerText = 0;
+        } else {
+          cartCounter.innerText = productsCount;
+        }
+      },
+      { signal: this.abortController.signal },
+    );
 
     this.components.search.element.addEventListener(
       "search-filter",
@@ -303,6 +305,9 @@ export default class Page {
 
   destroy() {
     this.remove();
+
+    this.abortController.abort();
+
     this.element = null;
     this.subElements = {};
     this.filters = new URLSearchParams();

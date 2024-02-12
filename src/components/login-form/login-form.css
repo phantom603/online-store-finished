@@ -1,0 +1,10 @@
+.login-form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  outline: 1px solid red;
+  width: 600px;
+}

@@ -1,8 +1,10 @@
 import productStore from "../../storage/store.js";
 
-import './cart-style.css';
+import "./cart-style.css";
 
 export default class Cart {
+  emptyCartMessage = "There is no items in the cart";
+
   constructor() {
     this.productStore = productStore;
 
@@ -14,8 +16,14 @@ export default class Cart {
 
   renderItems() {
     const items = this.productStore.getAll();
+    const itemsList = Object.values(items);
 
-    for (const item of Object.values(items)) {
+    if (!itemsList.length) {
+      this.subElements.list.innerHTML = this.emptyCartMessage;
+      return;
+    }
+
+    for (const item of itemsList) {
       const element = this.createItem(item);
       this.subElements.list.append(element);
     }
@@ -33,8 +41,10 @@ export default class Cart {
           <div class="cart-total">
             Total: <span data-element="total">${total}</span>
           </div>
-          <button class="order-btn os-btn-primary" data-element="clearCartBtn">Clear Cart</button>
-          <!--<button class="" data-element="orderBtn">Order</button>-->
+          <button class="os-btn-primary" data-element="clearCartBtn">Clear Cart</button>
+          <a href="/payment-status">
+            <button class="os-btn-primary" data-element="orderBtn">Order</button>
+          </a>
         </div>
       </div>
     `;
@@ -105,7 +115,7 @@ export default class Cart {
 
     this.subElements.clearCartBtn.addEventListener("click", () => {
       this.productStore.removeAll();
-      this.subElements.list.innerHTML = "";
+      this.subElements.list.innerHTML = this.emptyCartMessage;
       this.subElements.total.innerHTML = 0;
     });
   }
@@ -127,6 +137,10 @@ export default class Cart {
     const total = this.productStore.getTotal();
 
     this.subElements.total.innerHTML = total;
+
+    if (total === 0) {
+      this.subElements.list.innerHTML = this.emptyCartMessage;
+    }
   }
 
   createItem(item = {}) {

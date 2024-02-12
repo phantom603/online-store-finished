@@ -1,0 +1,40 @@
+.os-container {
+  width: 100%;
+}
+
+.os-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+}
+
+.cart-btn {
+  outline: none;
+  border: none;
+  min-width: 120px;
+  height: 36px;
+  color: #fff;
+  background: #7e72f2;
+  border-radius: 3px;
+}
+
+.cart-btn .bi {
+  font-size: 1.2rem;
+}
+
+.cart-count.hidden {
+  display: none;
+}
+
+.os-products {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  grid-gap: 20px;
+}
+
+.os-products-footer {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 20px;
+}
