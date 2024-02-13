@@ -69,6 +69,7 @@ export default class LoginForm {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include"
         });
       } catch (error) {
         console.error(`Error: ${error.message}`);
