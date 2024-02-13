@@ -22,7 +22,7 @@ describe("Page", () => {
 
   beforeAll(() => {
     window[Symbol.for("app-config")] = {
-      BACKEND_URL: "http://example.com/",
+      PRODUCT_SERVICE_URL: "http://example.com/",
     };
   });
   afterAll(() => {

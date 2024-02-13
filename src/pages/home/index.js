@@ -19,11 +19,12 @@ export default class Page {
   pageLimit = 9;
   totalPages = 100;
   filters = new URLSearchParams();
-  BACKEND_URL = "";
+  PRODUCTS_SERVICE_URL = "";
   abortController = new AbortController();
 
   constructor() {
-    this.BACKEND_URL = window[Symbol.for("app-config")].BACKEND_URL;
+    this.PRODUCTS_SERVICE_URL =
+      window[Symbol.for("app-config")].PRODUCTS_SERVICE_URL;
 
     this.filters.set("_page", "1");
     this.filters.set("_limit", this.pageLimit);
@@ -79,7 +80,7 @@ export default class Page {
   }
 
   async makeRequest(path = "") {
-    const url = new URL(path, this.BACKEND_URL);
+    const url = new URL(path, this.PRODUCTS_SERVICE_URL);
     const [data, error] = await httpRequest(url);
 
     if (data) {
@@ -268,7 +269,7 @@ export default class Page {
   }
 
   async loadProducts() {
-    const url = new URL("products", this.BACKEND_URL);
+    const url = new URL("products", this.PRODUCTS_SERVICE_URL);
 
     url.search = this.filters;
 

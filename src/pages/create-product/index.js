@@ -2,6 +2,8 @@ import { httpRequest } from "../../request";
 
 import "./create-product.css";
 
+const IMGUR_CLIENT_ID = "b73c45aa9239cb4";
+
 export default class CreateProductPage {
   subElements = {};
 
@@ -19,10 +21,11 @@ export default class CreateProductPage {
       event.preventDefault();
 
       const data = new FormData(formElement);
-
-      const result = await httpRequest("http://localhost:3001/api/products", {
+      const url = window[Symbol.for("app-config")].PRODUCTS_SERVICE_URL;
+      const result = await httpRequest(new URL("products", url), {
         method: "POST",
         body: JSON.stringify(Object.fromEntries(data)),
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },

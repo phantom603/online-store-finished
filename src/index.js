@@ -3,6 +3,19 @@ import "../config.js";
 import App from "./app.js";
 import router from "./router/index.js";
 
+// NOTE: validate...
+const validateEnv = () => {
+  const config = window[Symbol.for("app-config")];
+
+  for (const [key, value] of Object.entries(config)) {
+    if (!value) {
+      throw new Error(`Env variable ${key} must be defined`);
+    }
+  }
+};
+
+validateEnv();
+
 const app = new App();
 const root = document.getElementById("root");
 

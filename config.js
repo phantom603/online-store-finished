@@ -1,4 +1,6 @@
 window[Symbol.for("app-config")] = {
-  BACKEND_URL: process.env.BACKEND_URL,
+  PRODUCTS_SERVICE_URL: process.env.PRODUCTS_SERVICE_URL,
+  PAYMENTS_SERVICE_URL: process.env.PAYMENTS_SERVICE_URL,
+  AUTH_SERVICE_URL: process.env.AUTH_SERVICE_URL,
   // ... other env variables
 };
