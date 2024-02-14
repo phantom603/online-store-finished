@@ -1,13 +1,15 @@
-import { httpRequest } from "../../request";
+import { createProduct, getBrands, getCategories } from "../../api/products.js";
 
 import "./create-product.css";
-
-const IMGUR_CLIENT_ID = "b73c45aa9239cb4";
 
 export default class CreateProductPage {
   subElements = {};
 
   constructor() {
+    this.createProduct = createProduct;
+    this.getCategories = getCategories;
+    this.getBrands = getBrands;
+
     this.render();
     this.getSubElements();
     this.loadData();
@@ -21,9 +23,8 @@ export default class CreateProductPage {
       event.preventDefault();
 
       const data = new FormData(formElement);
-      const url = window[Symbol.for("app-config")].PRODUCTS_SERVICE_URL;
-      const result = await httpRequest(new URL("products", url), {
-        method: "POST",
+
+      const result = await this.createProduct({
         body: JSON.stringify(Object.fromEntries(data)),
         credentials: "include",
         headers: {
@@ -38,24 +39,16 @@ export default class CreateProductPage {
   }
 
   async loadData() {
-    const result = Promise.all([this.loadCategories(), this.loadBrands()]);
+    const result = Promise.all([this.getCategories(), this.getBrands()]);
 
     console.log("result", result);
 
     return result;
   }
 
-  async loadCategories() {
-    const result = await httpRequest("categories");
-    console.log("result", result);
-    return result;
-  }
-
-  async loadBrands() {
-    const result = await httpRequest("brands");
-    console.log("result", result);
-    return result;
-  }
+  // async loadCategories() { }
+  //
+  // async loadBrands() { }
 
   update() {
     // TODO: update form

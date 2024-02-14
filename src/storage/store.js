@@ -1,48 +1,83 @@
 import LocalStorageService from "./index.js";
 
 class ProductStore {
-  constructor() {
+  abortController = new AbortController();
+
+  init() {
     this.storage = new LocalStorageService(window.localStorage);
 
     this.initListeners();
   }
 
   initListeners() {
-    document.addEventListener("add-to-cart", (event) => {
-      this.add(event.detail);
-    });
-    document.addEventListener("remove-from-cart", (event) => {
-      this.remove(event.detail.id);
-    });
-    document.addEventListener("increase-counter", (event) => {
-      const id = event.detail;
-      const product = this.get(id);
+    document.addEventListener(
+      "add-to-cart",
+      (event) => {
+        this.add(event.detail);
+      },
+      { signal: this.abortController.signal },
+    );
+    document.addEventListener(
+      "remove-from-cart",
+      (event) => {
+        this.remove(event.detail.id);
+      },
+      { signal: this.abortController.signal },
+    );
+    document.addEventListener(
+      "increase-counter",
+      (event) => {
+        const id = event.detail;
+        const product = this.get(id);
 
-      if (product === null) {
-        throw `There is no product with id: ${id}`;
-      }
+        if (product === null) {
+          throw `There is no product with id: ${id}`;
+        }
 
-      product.count += 1;
+        product.count += 1;
 
-      this.add(product);
-    });
+        this.add(product);
+      },
+      { signal: this.abortController.signal },
+    );
 
-    document.addEventListener("decrease-counter", (event) => {
-      const id = event.detail;
-      const product = this.get(id);
+    document.addEventListener(
+      "decrease-counter",
+      (event) => {
+        const id = event.detail;
+        const product = this.get(id);
 
-      if (product === null) {
-        throw `There is no product with id: ${id}`;
-      }
+        if (product === null) {
+          throw `There is no product with id: ${id}`;
+        }
 
-      const newCount = product.count - 1;
+        const newCount = product.count - 1;
 
-      if (newCount === 0) {
-        this.remove(id);
-      } else {
-        this.add({ ...product, ...{ count: newCount } });
-      }
-    });
+        if (newCount === 0) {
+          this.remove(id);
+        } else {
+          this.add({ ...product, ...{ count: newCount } });
+        }
+      },
+      { signal: this.abortController.signal },
+    );
+
+    document.addEventListener(
+      "login",
+      () => {
+        console.log("login");
+      },
+      { signal: this.abortController.signal },
+    );
+
+    document.addEventListener(
+      "logout",
+      () => {
+        console.log("logout");
+      },
+
+      { signal: this.abortController.signal },
+    );
   }
 
   get(id = "") {
@@ -123,6 +158,10 @@ class ProductStore {
     }
 
     return total;
+  }
+
+  destroy() {
+    this.abortController.abort();
   }
 }
 

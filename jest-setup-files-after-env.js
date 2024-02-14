@@ -1,8 +1,24 @@
 import "@testing-library/jest-dom";
 import fetchMock from "jest-fetch-mock";
+import productStore from "./src/storage/store.js";
+import userStore from "./src/storage/user.js";
 // import prettyFormat from "pretty-format";
 
 fetchMock.enableMocks();
+
+beforeAll(() => {
+  window[Symbol.for("app-config")] = {
+    PRODUCTS_SERVICE_URL: "http://example.com/",
+  };
+  productStore.init();
+  userStore.init();
+});
+
+afterAll(() => {
+  window[Symbol.for("app-config")] = {};
+  productStore.destroy();
+  userStore.destroy();
+});
 
 // const { DOMElement, DOMCollection } = prettyFormat.plugins;
 //

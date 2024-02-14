@@ -2,8 +2,11 @@ import "../config.js";
 
 import App from "./app.js";
 import router from "./router/index.js";
+import { isAuthorized } from "./router/guards/index.js";
 
-// NOTE: validate...
+import productStore from "./storage/store.js";
+import userStore from "./storage/user.js";
+
 const validateEnv = () => {
   const config = window[Symbol.for("app-config")];
 
@@ -15,6 +18,9 @@ const validateEnv = () => {
 };
 
 validateEnv();
+
+productStore.init();
+userStore.init();
 
 const app = new App();
 const root = document.getElementById("root");
@@ -35,10 +41,17 @@ router
   .addRoute({
     pattern: /^payment-status$/,
     path: "payment-status",
+    guards: [isAuthorized],
   })
   .addRoute({
     pattern: /^create-product$/,
     path: "create-product",
+    guards: [isAuthorized],
+  })
+  .addRoute({
+    pattern: /^login$/,
+    path: "login",
+    guards: [() => !isAuthorized()],
   })
   .listen();
 

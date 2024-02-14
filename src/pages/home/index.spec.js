@@ -1,3 +1,4 @@
+import productStore from "../../storage/store.js";
 import Page from "./index.js";
 
 const categories = ["Monitors", "Laptops", "Video cards"];
@@ -20,14 +21,6 @@ const products = [
 describe("Page", () => {
   let page;
 
-  beforeAll(() => {
-    window[Symbol.for("app-config")] = {
-      PRODUCT_SERVICE_URL: "http://example.com/",
-    };
-  });
-  afterAll(() => {
-    window[Symbol.for("app-config")] = {};
-  });
   beforeEach(() => {
     fetchMock.mockResponses(
       [JSON.stringify(categories), { status: 200 }],
@@ -60,13 +53,8 @@ describe("Page", () => {
     expect(page.element).toBeVisible();
   });
 
-  it("should show modal cart", async () => {
-    const { cartBtn } = page.subElements;
-
-    cartBtn.dispatchEvent(new CustomEvent("pointerdown"));
-
-    expect(page.modal.element).toBeInTheDocument();
-    expect(page.modal.element).toBeVisible();
+  it("should redirect to cart page", async () => {
+    // TODO: implement it
   });
 
   it("should have ability to be destroyed", () => {

@@ -8,7 +8,7 @@ import Search from "../../components/search/index.js";
 
 import { prepareFilters } from "../../prepare-filters/index.js";
 import productStore from "../../storage/store.js";
-import { httpRequest } from "../../request/index.js";
+import { getProducts, getCategories, getBrands } from "../../api/products.js";
 
 import "./home.css";
 
@@ -19,17 +19,17 @@ export default class Page {
   pageLimit = 9;
   totalPages = 100;
   filters = new URLSearchParams();
-  PRODUCTS_SERVICE_URL = "";
   abortController = new AbortController();
 
   constructor() {
-    this.PRODUCTS_SERVICE_URL =
-      window[Symbol.for("app-config")].PRODUCTS_SERVICE_URL;
+    this.productStore = productStore;
+
+    this.getProducts = getProducts;
+    this.getCategories = getCategories;
+    this.getBrands = getBrands;
 
     this.filters.set("_page", "1");
     this.filters.set("_limit", this.pageLimit);
-
-    this.productStore = productStore;
 
     this.render();
     this.getSubElements();
@@ -79,20 +79,9 @@ export default class Page {
     `;
   }
 
-  async makeRequest(path = "") {
-    const url = new URL(path, this.PRODUCTS_SERVICE_URL);
-    const [data, error] = await httpRequest(url);
-
-    if (data) {
-      return Promise.resolve(data);
-    }
-
-    return Promise.reject(error);
-  }
-
   async loadData() {
-    const categories = this.makeRequest("categories");
-    const brands = this.makeRequest("brands");
+    const categories = this.getCategories();
+    const brands = this.getBrands();
     const products = this.loadProducts();
 
     const [categoriesData, brandsData, productsData] = await Promise.all([
@@ -269,23 +258,17 @@ export default class Page {
   }
 
   async loadProducts() {
-    const url = new URL("products", this.PRODUCTS_SERVICE_URL);
+    const { products, total } = await this.getProducts(this.filters);
 
-    url.search = this.filters;
-
-    const response = await fetch(url.toString());
-    const totalPages = parseInt(response.headers.get("X-Total-Count"), 10);
-
-    if (totalPages > this.totalPages) {
-      this.totalPages = totalPages;
+    if (total > this.totalPages) {
+      this.totalPages = total;
     }
 
     this.components.pagination.update({
-      totalPages: Math.ceil(totalPages / this.pageLimit),
+      totalPages: Math.ceil(total / this.pageLimit),
       page: this.filters.get("_page"),
     });
 
-    const products = await response.json();
     // NOTE: sync backend data with local stored data
     const productsFromStore = this.productStore.getAll();
 

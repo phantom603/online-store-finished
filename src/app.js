@@ -1,3 +1,4 @@
+// NOTE: this import needed for bootstrap navigation toaster icon
 import { Offcanvas } from "bootstrap";
 
 import Modal from "./components/modal/index.js";
@@ -18,10 +19,14 @@ export default class App {
     const { loginBtn } = this.subElements;
 
     loginBtn.addEventListener("click", () => {
-      const loginForm = new LoginForm();
-      this.modal = new Modal(loginForm);
+      const modal = new Modal();
 
-      this.modal.open();
+      const loginForm = new LoginForm(() => {
+        modal.close();
+      });
+
+      modal.addComponent(loginForm);
+      modal.open();
     });
   }
 
@@ -45,6 +50,10 @@ export default class App {
 
                   <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/create-product">Create product</a>
+                  </li>
+
+                  <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/login">Login page</a>
                   </li>
 
                   <li class="nav-item">

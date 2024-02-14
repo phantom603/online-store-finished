@@ -1,8 +1,15 @@
-import { httpRequest } from "../../request";
+import { signin } from "../../api/auth.js";
+import { UnauthorizedError } from "../../request/index.js";
+
 import "./login-form.css";
 
 export default class LoginForm {
-  constructor() {
+  constructor(onSuccessCallback = () => { }, onErrorCallback = () => { }) {
+    this.signin = signin;
+
+    this.onSuccessCallback = onSuccessCallback;
+    this.onErrorCallback = onErrorCallback;
+
     this.render();
     this.getSubElements();
     this.initEventListeners();
@@ -26,6 +33,10 @@ export default class LoginForm {
                   <input type="password" class="form-control" id="password" name="password" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
+
+                <div class="invalid-feedback">
+                  Validation error
+                </div>
               </form>
             </div>
           </div>
@@ -53,6 +64,15 @@ export default class LoginForm {
     this.subElements = result;
   }
 
+  onSuccess() {
+    this.element.dispatchEvent(new CustomEvent("login", { bubbles: true }));
+    this.onSuccessCallback();
+  }
+
+  onError() {
+    this.onErrorCallback();
+  }
+
   initEventListeners() {
     const { formElement } = this.subElements;
     const url = window[Symbol.for("app-config")].AUTH_SERVICE_URL;
@@ -60,22 +80,16 @@ export default class LoginForm {
     formElement.addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      const data = Object.fromEntries(new FormData(formElement));
+      const formData = Object.fromEntries(new FormData(formElement));
 
       try {
-        await httpRequest(new URL("signin", url), {
-          method: "POST",
-          body: JSON.stringify(data),
-          headers: {
-            "Content-Type": "application/json",
-          },
-          credentials: "include"
+        const user = await this.signin({
+          body: JSON.stringify(formData),
         });
-      } catch (error) {
-        console.error(`Error: ${error.message}`);
+        this.onSuccess();
+      } catch {
+        this.onError();
       }
-
-      formElement.reset();
     });
   }
 

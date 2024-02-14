@@ -1,14 +1,6 @@
 import { renderPage } from "./render-page.js";
 
 export class Router {
-  static redirectToHome() {
-    window.location = "/";
-  }
-
-  static redirectTo404() {
-    window.location = "/error404";
-  }
-
   routes = [];
 
   constructor() {
@@ -35,6 +27,12 @@ export class Router {
         this.navigate(href);
       }
     });
+
+    document.addEventListener("redirect", (event) => {
+      const path = event.detail;
+
+      this.redirectTo(path);
+    });
   }
 
   // NOTE: pattern "Facade"
@@ -60,8 +58,8 @@ export class Router {
     history.pushState(...args);
   }
 
-  addRoute({ pattern, path } = {}) {
-    this.routes.push({ pattern, path });
+  addRoute({ pattern, path, guards = [] } = {}) {
+    this.routes.push({ pattern, path, guards });
     return this;
   }
 
@@ -90,11 +88,15 @@ export class Router {
       match = this.strippedPath.match(route.pattern);
 
       if (match) {
-        this.page = await this.changePage(
-          route.path,
-          match,
-          window.location.search,
-        );
+        if (route.guards.every((guard) => guard())) {
+          this.page = await this.changePage(
+            route.path,
+            match,
+            window.location.search,
+          );
+        } else {
+          this.redirectTo("home");
+        }
         break;
       }
     }

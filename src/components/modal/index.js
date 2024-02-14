@@ -24,7 +24,12 @@ export default class Modal {
     this.controlSelector = "hidden";
     this.render();
     this.getSubElements();
-    this.renderComponents();
+    this.renderComponent();
+  }
+
+  addComponent(component = {}) {
+    this.component = component;
+    this.renderComponent();
   }
 
   get template() {
@@ -53,10 +58,12 @@ export default class Modal {
     }
   }
 
-  renderComponents() {
+  renderComponent() {
     const { content } = this.subElements;
 
-    content.append(this.component.element);
+    if (Object.keys(this.component).length) {
+      content.append(this.component.element);
+    }
   }
 
   open() {
