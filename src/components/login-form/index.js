@@ -1,10 +1,9 @@
 import { signin } from "../../api/auth.js";
-import { UnauthorizedError } from "../../request/index.js";
 
 import "./login-form.css";
 
 export default class LoginForm {
-  constructor(onSuccessCallback = () => { }, onErrorCallback = () => { }) {
+  constructor(onSuccessCallback = () => {}, onErrorCallback = () => {}) {
     this.signin = signin;
 
     this.onSuccessCallback = onSuccessCallback;
@@ -16,9 +15,8 @@ export default class LoginForm {
   }
 
   get template() {
-    return `
-    <div class="login-form-wrapper">
-      <form class="login-form" data-element="formElement">
+    return `<div class="login-form-wrapper ">
+      <form class="login-form" data-element="formElement" novalidate>
         <div class="container mt-5 mb-5">
           <div class="row justify-content-center">
             <div class="col-md-8">
@@ -26,17 +24,29 @@ export default class LoginForm {
               <form id="loginForm">
                 <div class="mb-3">
                   <label for="username" class="form-label">Username</label>
-                  <input type="text" class="form-control" id="username" name="email" required>
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="username"
+                    name="email"
+                    required
+                  />
+                  <div class="invalid-feedback">Please fill email</div>
                 </div>
                 <div class="mb-3">
                   <label for="password" class="form-label">Password</label>
-                  <input type="password" class="form-control" id="password" name="password" required>
+                  <input
+                    type="password"
+                    class="form-control"
+                    id="password"
+                    name="password"
+                    required
+                  />
+                  <div class="invalid-feedback">Please fill password</div>
                 </div>
                 <button type="submit" class="btn btn-primary">Login</button>
 
-                <div class="invalid-feedback">
-                  Validation error
-                </div>
+                <div class="invalid-feedback">Invalid Credentials</div>
               </form>
             </div>
           </div>
@@ -75,10 +85,14 @@ export default class LoginForm {
 
   initEventListeners() {
     const { formElement } = this.subElements;
-    const url = window[Symbol.for("app-config")].AUTH_SERVICE_URL;
 
     formElement.addEventListener("submit", async (event) => {
       event.preventDefault();
+
+      if (!formElement.checkValidity()) {
+        formElement.classList.add("was-validated");
+        return;
+      }
 
       const formData = Object.fromEntries(new FormData(formElement));
 
@@ -87,10 +101,17 @@ export default class LoginForm {
           body: JSON.stringify(formData),
         });
         this.onSuccess();
-      } catch {
+      } catch (error) {
+        this.showValidationErrors(error);
         this.onError();
       }
     });
+  }
+
+  showValidationErrors(error = {}) {
+    const errorMsgElement = this.element.querySelector("button");
+
+    errorMsgElement.classList.add("is-invalid");
   }
 
   remove() {

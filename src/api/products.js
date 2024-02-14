@@ -1,4 +1,5 @@
 import { httpRequest } from "../request/index.js";
+import { uploadToImgur } from "./imgur-img-upload.js";
 
 const getBaseUrl = () => {
   const { PRODUCTS_SERVICE_URL } = window[Symbol.for("app-config")];
@@ -10,22 +11,36 @@ export const getProducts = async (search = {}) => {
 
   url.search = search;
 
-  const response = await httpRequest.request(url);
+  const { data, response } = await httpRequest.request(url);
+
   const total = parseInt(response.headers.get("X-Total-Count"), 10);
-  const products = await response.json();
 
   return {
-    products,
+    products: data,
     total,
   };
 };
 
-const IMGUR_CLIENT_ID = "b73c45aa9239cb4";
-
-export const createProduct = async (options = {}) => {
+export const createProduct = async (body = {}, options = {}) => {
   const url = new URL("products", getBaseUrl());
+  const obj = Object.fromEntries(body);
+
+  if (obj.image.size > 0) {
+    const response = await uploadToImgur(obj.image);
+    const { link } = response.data;
+
+    obj.images = [link];
+  }
+
+  // NOTE: cleare image filed because backend expects imageS field
+  delete obj.image;
 
   const result = await httpRequest.post(url, {
+    credentials: "include",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(obj),
     ...options,
   });
 

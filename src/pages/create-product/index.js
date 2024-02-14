@@ -24,31 +24,31 @@ export default class CreateProductPage {
 
       const data = new FormData(formElement);
 
-      const result = await this.createProduct({
-        body: JSON.stringify(Object.fromEntries(data)),
-        credentials: "include",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      try {
+        const result = await this.createProduct(data);
 
-      console.log("result", result);
-
-      formElement.reset();
+        formElement.reset();
+      } catch (error) {
+        this.showValidationErrors(error);
+      }
     });
+  }
+
+  showValidationErrors(error = {}) {
+    if (error.data) {
+      for (const item of error.data.errors) {
+        console.log(item);
+      }
+    } else {
+      console.log(error.message);
+    }
   }
 
   async loadData() {
     const result = Promise.all([this.getCategories(), this.getBrands()]);
 
-    console.log("result", result);
-
     return result;
   }
-
-  // async loadCategories() { }
-  //
-  // async loadBrands() { }
 
   update() {
     // TODO: update form
@@ -106,7 +106,7 @@ export default class CreateProductPage {
 
         <div class="mb-3">
           <label for="productImage" class="form-label">Product image</label>
-          <input class="form-control" type="file" accept=".jpg, .jpeg, .png" id="productImage">
+          <input class="form-control" name="image" type="file" accept=".jpg, .jpeg, .png" id="productImage">
         </div>
 
         <button class="btn btn-primary" type="submit">Submit</button>

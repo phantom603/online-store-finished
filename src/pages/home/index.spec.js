@@ -1,4 +1,3 @@
-import productStore from "../../storage/store.js";
 import Page from "./index.js";
 
 const categories = ["Monitors", "Laptops", "Video cards"];

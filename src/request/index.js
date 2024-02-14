@@ -2,44 +2,36 @@ export const httpRequest = {
   async request(url = "", options = {}) {
     const urlString = url.toString();
     const response = await fetch(urlString, options);
+    const data = await response.json();
 
     if (response.status === 401) {
-      throw new UnauthorizedError();
+      throw new UnauthorizedError(data, response);
     }
 
-    if (response.status !== 200) {
-      throw new FetchError();
+    if (response.status === 400) {
+      throw new BadRequestError(data, response);
     }
 
-    return response;
+    return { data, response };
   },
 
   async get(url = "", options = {}) {
-    try {
-      const response = await this.request(url, {
-        credentials: "include",
-        method: "GET",
-        ...options,
-      });
+    const { data } = await this.request(url, {
+      credentials: "include",
+      method: "GET",
+      ...options,
+    });
 
-      return response.json();
-    } catch (error) {
-      throw new FetchError(error.message);
-    }
+    return data;
   },
 
   async post(url = "", options = {}) {
-    try {
-      const response = await this.request(url, {
-        credentials: "include",
-        method: "POST",
-        ...options,
-      });
-
-      return response.json();
-    } catch (error) {
-      throw new FetchError(error.message);
-    }
+    const { data } = await this.request(url, {
+      credentials: "include",
+      method: "POST",
+      ...options,
+    });
+    return data;
   },
 };
 
@@ -53,10 +45,13 @@ class CustomError extends Error {
 
 export class FetchError extends CustomError {
   name = "FetchError";
-  statusCode = 400;
 
-  constructor(message = "") {
-    super(`Bad request`, message);
+  constructor(data, response = {}, message = "") {
+    super(`Bad request ${message}`);
+
+    this.response = response;
+    this.data = data;
+    this.statusCode = response.status;
   }
 }
 
@@ -64,8 +59,23 @@ export class UnauthorizedError extends CustomError {
   name = "UnauthorizedError";
   statusCode = 401;
 
-  constructor(message = "") {
-    super(`Unauthorized`, message);
+  constructor(data, response = {}, message = "") {
+    super(`Unauthorized ${message}`);
+
+    this.response = response;
+    this.data = data;
+  }
+}
+
+export class BadRequestError extends CustomError {
+  name = "BadRequestError";
+  statusCode = 400;
+
+  constructor(data, response = {}, message = "") {
+    super(`Bad request ${message}`);
+
+    this.response = response;
+    this.data = data;
   }
 }
 
