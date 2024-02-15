@@ -47,7 +47,7 @@ export class FetchError extends CustomError {
   name = "FetchError";
 
   constructor(data, response = {}, message = "") {
-    super(`Bad request ${message}`);
+    super(`Bad request ${message}`.trim());
 
     this.response = response;
     this.data = data;
@@ -60,7 +60,7 @@ export class UnauthorizedError extends CustomError {
   statusCode = 401;
 
   constructor(data, response = {}, message = "") {
-    super(`Unauthorized ${message}`);
+    super(`Unauthorized ${message}`.trim());
 
     this.response = response;
     this.data = data;

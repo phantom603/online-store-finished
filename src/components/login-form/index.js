@@ -100,12 +100,20 @@ export default class LoginForm {
         const user = await this.signin({
           body: JSON.stringify(formData),
         });
+        this.showAlert("success", "Login success");
         this.onSuccess();
       } catch (error) {
+        this.showAlert("error", "Login error");
         this.showValidationErrors(error);
         this.onError();
       }
     });
+  }
+
+  showAlert(type = "", message = "") {
+    this.element.dispatchEvent(
+      new CustomEvent(`show-${type}-alert`, { bubbles: true, detail: message }),
+    );
   }
 
   showValidationErrors(error = {}) {

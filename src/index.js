@@ -7,6 +7,8 @@ import { isAuthorized } from "./router/guards/index.js";
 import productStore from "./storage/store.js";
 import userStore from "./storage/user.js";
 
+import alertsService from "./alerts-service/index.js";
+
 const validateEnv = () => {
   const config = window[Symbol.for("app-config")];
 
@@ -21,6 +23,7 @@ validateEnv();
 
 productStore.init();
 userStore.init();
+alertsService.init();
 
 const app = new App();
 const root = document.getElementById("root");

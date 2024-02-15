@@ -6,7 +6,7 @@ import CardsList from "../../components/cards-list/index.js";
 import Card from "../../components/card/index.js";
 import Search from "../../components/search/index.js";
 
-import { prepareFilters } from "../../prepare-filters/index.js";
+import { prepareFilters } from "./prepare-filters.js";
 import productStore from "../../storage/store.js";
 import { getProducts, getCategories, getBrands } from "../../api/products.js";
 

@@ -1,4 +1,5 @@
 import { createProduct, getBrands, getCategories } from "../../api/products.js";
+import CustomAlert from "../../components/alert/index.js";
 
 import "./create-product.css";
 
@@ -22,16 +23,29 @@ export default class CreateProductPage {
     formElement.addEventListener("submit", async (event) => {
       event.preventDefault();
 
-      const data = new FormData(formElement);
+      if (!formElement.checkValidity()) {
+        formElement.classList.add("was-validated");
+        return;
+      }
+
+      const formData = new FormData(formElement);
 
       try {
-        const result = await this.createProduct(data);
+        const result = await this.createProduct(formData);
 
+        this.showAlert("success", "Product was successfully created.");
         formElement.reset();
       } catch (error) {
+        this.showAlert("error", "Error during product creation.");
         this.showValidationErrors(error);
       }
     });
+  }
+
+  showAlert(type = "", message = "") {
+    this.element.dispatchEvent(
+      new CustomEvent(`show-${type}-alert`, { bubbles: true, detail: message }),
+    );
   }
 
   showValidationErrors(error = {}) {
