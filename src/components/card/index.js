@@ -38,7 +38,7 @@ export default class Card {
           </div>
 
           <h5 class="os-product-title">${this.data.title}</h5>
-          <p class="os-product-description">${this.data.category}</p>
+          <p class="os-product-description">${this.data.brand} ${this.data.category}</p>
         </div>
 
         <footer class="os-product-footer">

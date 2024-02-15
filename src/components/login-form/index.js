@@ -15,7 +15,7 @@ export default class LoginForm {
   }
 
   get template() {
-    return `<div class="login-form-wrapper ">
+    return `<div class="login-form-wrapper">
       <form class="login-form" data-element="formElement" novalidate>
         <div class="container mt-5 mb-5">
           <div class="row justify-content-center">
@@ -104,6 +104,7 @@ export default class LoginForm {
         this.onSuccess();
       } catch (error) {
         this.showAlert("error", "Login error");
+        formElement.classList.remove("was-validated");
         this.showValidationErrors(error);
         this.onError();
       }

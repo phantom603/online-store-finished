@@ -5,6 +5,7 @@
   "scripts": {
     "start:server": "cd server && npm start",
     "start:client": "parcel index.html",
+    "develop": "parcel index.html",
     "build": "npm run clean && NODE_ENV=production parcel build index.html --dist-dir build",
     "start": "concurrently --kill-others 'npm run start:client' 'npm run start:server'",
     "clean": "rimraf build",
