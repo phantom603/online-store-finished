@@ -61,6 +61,10 @@ export default class App {
                   </li>
 
                   <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/orders">Orders</a>
+                  </li>
+
+                  <li class="nav-item">
                     <button type="button" class="btn btn-link" data-element="loginBtn">Login</button>
                   </li>
                 </ul>

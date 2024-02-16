@@ -23,3 +23,8 @@ export const getClientSecret = async (data = []) => {
 
   return result;
 };
+
+// TODO: add real API call
+export const getOrders = async () => {
+  const result = [];
+};

@@ -52,6 +52,11 @@ router
     guards: [isAuthorized],
   })
   .addRoute({
+    pattern: /^orders$/,
+    path: "orders",
+    // guards: [isAuthorized],
+  })
+  .addRoute({
     pattern: /^create-product$/,
     path: "create-product",
     guards: [isAuthorized],
