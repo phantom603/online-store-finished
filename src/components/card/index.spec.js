@@ -71,7 +71,7 @@ describe("Card component", () => {
     expect(titleElement.textContent).toBe("Test Product");
     expect(ratingElement.textContent).toBe("4");
     expect(priceElement.textContent).toBe("19.99");
-    expect(descriptionElement.textContent).toBe("Test Category");
+    expect(descriptionElement.textContent).toBe("Test Brand Test Category");
   });
 
   it("should have ability to be destroyed", () => {

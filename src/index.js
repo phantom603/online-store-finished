@@ -42,6 +42,11 @@ router
     path: "cart",
   })
   .addRoute({
+    pattern: /^payment$/,
+    path: "payment",
+    guards: [isAuthorized],
+  })
+  .addRoute({
     pattern: /^payment-status$/,
     path: "payment-status",
     guards: [isAuthorized],

@@ -53,6 +53,10 @@ export default class App {
                   </li>
 
                   <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/payment">Payment</a>
+                  </li>
+
+                  <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="/login">Login page</a>
                   </li>
 

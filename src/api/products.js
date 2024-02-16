@@ -12,7 +12,6 @@ export const getProducts = async (search = {}) => {
   url.search = search;
 
   const { data, response } = await httpRequest.request(url);
-
   const total = parseInt(response.headers.get("X-Total-Count"), 10);
 
   return {

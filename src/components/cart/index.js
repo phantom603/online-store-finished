@@ -42,7 +42,7 @@ export default class Cart {
             Total: <span data-element="total">${total}</span>
           </div>
           <button class="os-btn-primary" data-element="clearCartBtn">Clear Cart</button>
-          <a href="/payment-status">
+          <a href="/payment">
             <button class="os-btn-primary" data-element="orderBtn">Order</button>
           </a>
         </div>
