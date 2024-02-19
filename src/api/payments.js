@@ -29,3 +29,13 @@ export const getOrders = async () => {
 
   return orders;
 };
+
+export const getPaymentStatus = async (sessionId = "") => {
+  const url = new URL("payment-status", getBaseUrl());
+
+  url.search = new URLSearchParams(`session_id=${sessionId}`);
+
+  const status = await httpRequest.get(url);
+
+  return status;
+};
