@@ -1,8 +1,9 @@
 import { httpRequest } from "../request/index.js";
 
 const getBaseUrl = () => {
-  const { AUTH_SERVICE_URL } = window[Symbol.for("app-config")];
-  return new URL(AUTH_SERVICE_URL);
+  const { BACKEND_URL } = window[Symbol.for("app-config")];
+
+  return new URL("auth/", BACKEND_URL);
 };
 
 export const signin = async (options = {}) => {

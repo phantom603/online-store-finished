@@ -1,5 +1,0 @@
-{
-  "/api/users": {
-    "target": "http://localhost:3002/",
-  }
-}

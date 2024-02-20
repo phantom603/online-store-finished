@@ -1,8 +1,9 @@
 import { httpRequest } from "../request/index.js";
 
 const getBaseUrl = () => {
-  const { PAYMENTS_SERVICE_URL } = window[Symbol.for("app-config")];
-  return new URL(PAYMENTS_SERVICE_URL);
+  const { BACKEND_URL } = window[Symbol.for("app-config")];
+
+  return new URL("payments/", BACKEND_URL);
 };
 
 export const getClientSecret = async (data = []) => {

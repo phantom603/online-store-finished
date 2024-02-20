@@ -2,8 +2,9 @@ import { httpRequest } from "../request/index.js";
 import { uploadToImgur } from "./imgur-img-upload.js";
 
 const getBaseUrl = () => {
-  const { PRODUCTS_SERVICE_URL } = window[Symbol.for("app-config")];
-  return new URL(PRODUCTS_SERVICE_URL);
+  const { BACKEND_URL } = window[Symbol.for("app-config")];
+
+  return new URL("shop/", BACKEND_URL);
 };
 
 export const getProducts = async (search = {}) => {
