@@ -19,3 +19,13 @@ export const signin = async (options = {}) => {
 
   return result;
 };
+
+export const signOut = async () => {
+  const url = new URL("signout", getBaseUrl());
+  const result = await httpRequest.post(url, {
+    headers: {
+      "Content-Type": "application/json",
+    },
+    credentials: "include",
+  });
+};

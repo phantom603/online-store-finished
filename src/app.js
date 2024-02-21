@@ -4,6 +4,8 @@ import { Offcanvas } from "bootstrap";
 import Modal from "./components/modal/index.js";
 import LoginForm from "./components/login-form/index.js";
 
+import { signOut } from "./api/auth.js";
+
 import "./app.css";
 
 export default class App {
@@ -16,9 +18,9 @@ export default class App {
   }
 
   initEventListeners() {
-    const { loginBtn } = this.subElements;
+    const { signinBtn, signoutBtn } = this.subElements;
 
-    loginBtn.addEventListener("click", () => {
+    signinBtn.addEventListener("click", () => {
       const modal = new Modal();
 
       const loginForm = new LoginForm(() => {
@@ -27,6 +29,31 @@ export default class App {
 
       modal.addComponent(loginForm);
       modal.open();
+    });
+
+    signoutBtn.addEventListener("click", async () => {
+      try {
+        await signOut();
+
+        this.element.dispatchEvent(
+          new CustomEvent("show-success-alert", {
+            bubbles: true,
+            detail: "Logout success",
+          }),
+        );
+        this.element.dispatchEvent(
+          new CustomEvent("logout", {
+            bubbles: true,
+          }),
+        );
+      } catch (error) {
+        this.element.dispatchEvent(
+          new CustomEvent("show-error-alert", {
+            bubbles: true,
+            detail: error.message,
+          }),
+        );
+      }
     });
   }
 
@@ -69,7 +96,10 @@ export default class App {
                   </li>
 
                   <li class="nav-item">
-                    <button type="button" class="btn btn-link" data-element="loginBtn">Login</button>
+                    <button type="button" class="btn btn-link" data-element="signinBtn">Login</button>
+                  </li>
+                  <li class="nav-item">
+                    <button type="button" class="btn btn-link" data-element="signoutBtn">Logout</button>
                   </li>
                 </ul>
               </div>

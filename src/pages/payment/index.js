@@ -37,7 +37,7 @@ export default class PaymentPage {
       this.checkout.mount("#checkout");
     } catch (error) {
       this.element.dispatchEvent(
-        new CustomEvent(`show-error-alert`, {
+        new CustomEvent("show-error-alert", {
           bubbles: true,
           detail: error.message,
         }),

@@ -61,23 +61,6 @@ class ProductStore {
       },
       { signal: this.abortController.signal },
     );
-
-    document.addEventListener(
-      "login",
-      () => {
-        console.log("login");
-      },
-      { signal: this.abortController.signal },
-    );
-
-    document.addEventListener(
-      "logout",
-      () => {
-        console.log("logout");
-      },
-
-      { signal: this.abortController.signal },
-    );
   }
 
   get(id = "") {
