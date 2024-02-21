@@ -48,13 +48,15 @@ export const createProduct = async (body = {}, options = {}) => {
 };
 
 export const getCategories = async () => {
-  const result = await httpRequest.get(new URL("categories", getBaseUrl()));
+  const url = new URL("categories", getBaseUrl());
+  const result = await httpRequest.get(url);
 
   return result;
 };
 
 export const getBrands = async () => {
-  const result = await httpRequest.get(new URL("brands", getBaseUrl()));
+  const url = new URL("brands", getBaseUrl());
+  const result = await httpRequest.get(url);
 
   return result;
 };
