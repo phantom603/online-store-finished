@@ -49,6 +49,19 @@ export default class CreateProductPage {
     this.subElements[name].replaceChildren(fragment);
   }
 
+  startLoading() {
+    this.subElements.fieldset.setAttribute("disabled", "true");
+    this.subElements.submitBtn.innerHTML = `
+      <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+      <span role="status">Loading...</span>
+    `;
+  }
+
+  stopLoading() {
+    this.subElements.fieldset.removeAttribute("disabled");
+    this.subElements.submitBtn.innerHTML = "Sumbit";
+  }
+
   initEventListeners() {
     const formElement = this.subElements.form;
 
@@ -63,6 +76,7 @@ export default class CreateProductPage {
       const formData = new FormData(formElement);
 
       try {
+        this.startLoading();
         const result = await this.createProduct(formData);
 
         this.showAlert("success", "Product was successfully created.");
@@ -72,6 +86,7 @@ export default class CreateProductPage {
         this.showValidationErrors(error);
       } finally {
         formElement.classList.remove("was-validated");
+        this.stopLoading();
       }
     });
   }
@@ -82,6 +97,7 @@ export default class CreateProductPage {
     );
   }
 
+  // TODO: need to implement
   showValidationErrors(error = {}) {
     if (error.data) {
       for (const item of error.data.errors) {
@@ -146,7 +162,9 @@ export default class CreateProductPage {
             <div class="invalid-feedback">Please choose product image</div>
           </div>
 
-          <button class="btn btn-primary" type="submit">Submit</button>
+          <button class="btn btn-primary" data-element="submitBtn" type="submit">
+            Submit
+          </button>
         </fieldset>
       </form>
     </div>`;
