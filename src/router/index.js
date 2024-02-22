@@ -41,6 +41,7 @@ export class Router {
   }
 
   navigate(path = "") {
+    console.error("path", path);
     history.pushState(null, null, path);
 
     this.route();
@@ -95,6 +96,7 @@ export class Router {
             window.location.search,
           );
         } else {
+          console.error(2222);
           this.redirectTo("home");
         }
         break;
