@@ -96,7 +96,7 @@ export default class App {
                   </li>
 
                   <li class="nav-item">
-                    <button type="button" class="btn btn-link" data-element="signinBtn">Login</button>
+                    <button type="button" class="btn btn-link" data-element="signinBtn" data-cy="login-btn">Login</button>
                   </li>
                   <li class="nav-item">
                     <button type="button" class="btn btn-link" data-element="signoutBtn">Logout</button>

@@ -28,7 +28,7 @@ export default class CustomAlert {
 
   get template() {
     return `
-      <div class="alert alert-${this.type} alert-dismissible fade show fixed-top w-100" role="alert">
+      <div class="alert alert-${this.type} alert-dismissible fade show fixed-top w-100" role="alert" data-cy="alert">
         ${this.message}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>

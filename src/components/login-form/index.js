@@ -3,7 +3,7 @@ import { signin } from "../../api/auth.js";
 import "./login-form.css";
 
 export default class LoginForm {
-  constructor(onSuccessCallback = () => {}, onErrorCallback = () => {}) {
+  constructor(onSuccessCallback = () => { }, onErrorCallback = () => { }) {
     this.signin = signin;
 
     this.onSuccessCallback = onSuccessCallback;
@@ -31,6 +31,7 @@ export default class LoginForm {
                       id="username"
                       name="email"
                       required
+                      data-cy="email"
                     />
                     <div class="invalid-feedback">Please fill email</div>
                   </div>
@@ -42,12 +43,13 @@ export default class LoginForm {
                       id="password"
                       name="password"
                       required
+                      data-cy="password"
                     />
                     <div class="invalid-feedback">Please fill password</div>
                   </div>
-                  <button type="submit" data-element="loginBtn" class="btn btn-primary">Login</button>
+                  <button type="submit" data-element="loginBtn" class="btn btn-primary" data-cy="login-submit-btn">Login</button>
 
-                  <div class="invalid-feedback">Invalid Credentials</div>
+                  <div class="invalid-feedback" data-cy="invalid-credentials">Invalid Credentials</div>
                 </form>
               </div>
             </div>
