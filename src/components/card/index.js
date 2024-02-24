@@ -54,7 +54,7 @@ export default class Card {
     const classValue = inStore ? "active" : "";
 
     return `
-      <button class="os-btn-primary ${classValue}" data-element="addToCartBtn" type="button">
+      <button class="os-btn-primary ${classValue}" data-element="addToCartBtn" type="button" data-cy="add-to-cart-btn">
         ${labelValue}
       </button>
     `;

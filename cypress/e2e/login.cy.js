@@ -16,11 +16,11 @@ describe('Login Flow', () => {
     cy.get("[data-cy='alert']").should('be.visible').and('contain', 'Login error');
 
     // and our cookie should not be set
-    cy.getCookie('session').should('not.exist')
+    cy.getCookie('session').should('not.exist');
 
     // check if we can access protected resource
-    cy.visit(Cypress.env('create_product_url'))
-    cy.url().should('not.include', Cypress.env('create_product_url'))
+    cy.visit(Cypress.env('create_product_url'));
+    cy.url().should('not.include', Cypress.env('create_product_url'));
   });
 
   it('Successfully logs user in', () => {
@@ -35,10 +35,10 @@ describe('Login Flow', () => {
     cy.get("[data-cy='alert']").should('be.visible').and('contain', 'Login success');
 
     // and our cookie should be set to 'session'
-    cy.getCookie('session').should('exist')
+    cy.getCookie('session').should('exist');
 
     // check if we can access protected resource
-    cy.visit(Cypress.env('create_product_url'))
-    cy.url().should('include', Cypress.env('create_product_url'))
+    cy.visit(Cypress.env('create_product_url'));
+    cy.url().should('include', Cypress.env('create_product_url'));
   })
 })

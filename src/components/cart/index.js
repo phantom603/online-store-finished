@@ -43,7 +43,7 @@ export default class Cart {
           </div>
           <button class="os-btn-primary" data-element="clearCartBtn">Clear Cart</button>
           <a href="/payment">
-            <button class="os-btn-primary" data-element="orderBtn">Order</button>
+            <button class="os-btn-primary" data-element="orderBtn" data-cy="order-btn">Order</button>
           </a>
         </div>
       </div>

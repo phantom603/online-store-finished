@@ -112,23 +112,23 @@ export default class CreateProductPage {
     return `<div>
       <h2 class="app-page-title">Create Product</h2> 
 
-      <form class="w-50" data-element="form" novalidate>
+      <form class="w-50" data-element="form" novalidate data-cy="create-product-form">
         <fieldset data-element="fieldset" disabled>
           <div class="mb-3">
             <label for="productTitle" class="form-label">Product title</label>
-            <input type="text" name="title" required class="form-control" id="productTitle" placeholder="title">
+            <input type="text" name="title" required class="form-control" id="productTitle" placeholder="title" data-cy="title">
             <div class="invalid-feedback">Please fill title</div>
           </div>
 
           <div class="mb-3">
             <label for="productPrice" class="form-label">Product price</label>
-            <input type="number" name="price" required value="100" min="0" max="85000" step="100" class="form-control" id="productPrice">
+            <input type="number" name="price" required value="100" min="0" max="85000" step="100" class="form-control" id="productPrice" data-cy="price">
             <div class="invalid-feedback">Please set price</div>
           </div>
 
           <div class="mb-3">
             <label for="productBrand" class="form-label">Product brand</label>
-            <select name="brand" data-element="brandsSelect" id="productBrand" class="form-select">
+            <select name="brand" data-element="brandsSelect" id="productBrand" class="form-select" data-cy="brand">
               <option>...</option>
             </select>
           </div>
@@ -138,7 +138,7 @@ export default class CreateProductPage {
               Product rating
             </label>
             <div class="w-100">
-              <input type="range" name="rating" min="1" max="5" step="1" value="5" class="w-100" id="productRating" list="ratingMarkers">
+              <input type="range" name="rating" min="1" max="5" step="1" value="5" class="w-100" id="productRating" list="ratingMarkers" data-cy="rating">
               <datalist id="ratingMarkers" class="w-100">
                 <option value="1" label="1"></option>
                 <option value="2" label="2"></option>
@@ -151,18 +151,18 @@ export default class CreateProductPage {
 
           <div class="mb-3">
             <label for="productCategory" class="form-label">Product category</label>
-            <select name="category" data-element="categoriesSelect" id="productCategory" class="form-select">
+            <select name="category" data-element="categoriesSelect" id="productCategory" class="form-select" data-cy="category">
               <option>...</option>
             </select>
           </div>
 
           <div class="mb-3">
             <label for="productImage" class="form-label">Product image</label>
-            <input class="form-control" name="image" required type="file" accept=".jpg, .jpeg, .png" id="productImage">
+            <input class="form-control" name="image" required type="file" accept=".jpg, .jpeg, .png" id="productImage" data-cy="image">
             <div class="invalid-feedback">Please choose product image</div>
           </div>
 
-          <button class="btn btn-primary" data-element="submitBtn" type="submit">
+          <button class="btn btn-primary" data-element="submitBtn" type="submit" data-cy="create-product-submit-btn">
             Submit
           </button>
         </fieldset>

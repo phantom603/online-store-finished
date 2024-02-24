@@ -49,7 +49,7 @@ export default class Page {
         <header class="os-header">
           <h2 class="app-page-title">Home Page</h2>
           <a href="/cart">
-            <button class="cart-btn os-btn-primary" data-element="cartBtn">
+            <button class="cart-btn os-btn-primary" data-element="cartBtn" data-cy="cart-btn">
               <i class="bi bi-cart"></i>
               Cart <span class="${cartBtnClass} cart-count" data-element="cartCounter">${totalProducts}</span>
             </button>
@@ -66,7 +66,7 @@ export default class Page {
               <!-- Search -->
             </div>
 
-            <div data-element="cardsList">
+            <div data-element="cardsList" data-cy="products-list">
               <!-- CardsList -->
             </div>
 
