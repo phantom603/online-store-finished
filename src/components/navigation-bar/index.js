@@ -19,7 +19,7 @@ export default class NavigationBar {
   ];
 
   buttons = [
-    { name: "Login", guard: () => !isAuthorized() },
+    { name: "Login", guard: () => !isAuthorized(), data_cy: 'login-btn' },
     { name: "Logout", guard: () => isAuthorized() },
   ];
 
@@ -63,7 +63,7 @@ export default class NavigationBar {
 
       li.innerHTML = `
         <li class="nav-item">
-          <button type="button" class="btn btn-link" data-element="${button.name.toLowerCase()}Btn">${button.name}</button>
+          <button type="button" class="btn btn-link" data-element="${button.name.toLowerCase()}Btn" ${!!button.data_cy ? `data-cy=${button.data_cy}` : ''}>${button.name}</button>
         </li>
       `;
 
