@@ -96,7 +96,6 @@ export class Router {
             window.location.search,
           );
         } else {
-          console.error(2222);
           this.redirectTo("home");
         }
         break;
