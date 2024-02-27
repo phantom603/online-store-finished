@@ -9,6 +9,8 @@ import userStore from "./storage/user.js";
 
 import alertsService from "./alerts-service/index.js";
 
+// TODO: add tests for this module
+
 const validateEnv = () => {
   const config = window[Symbol.for("app-config")];
 
