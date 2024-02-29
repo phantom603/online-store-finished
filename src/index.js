@@ -1,25 +1,15 @@
-import "../config.js";
+import "./config.js";
 
-import App from "./app.js";
+import { validateEnv } from "./validate-env.js";
+import App from "./layout/app.js";
 import router from "./router/index.js";
-import { isAuthorized } from "./router/guards/index.js";
 
 import productStore from "./storage/store.js";
 import userStore from "./storage/user.js";
 
-import alertsService from "./alerts-service/index.js";
+import alertsService from "./services/index.js";
 
-// TODO: add tests for this module
-
-const validateEnv = () => {
-  const config = window[Symbol.for("app-config")];
-
-  for (const [key, value] of Object.entries(config)) {
-    if (!value) {
-      throw new Error(`Env variable ${key} must be defined`);
-    }
-  }
-};
+import "./styles.scss";
 
 validateEnv();
 
@@ -27,47 +17,10 @@ productStore.init();
 userStore.init();
 alertsService.init();
 
-const app = new App();
-const root = document.getElementById("root");
+const app = new App({
+  router,
+});
 
-router
-  .addRoute({
-    pattern: /^$/,
-    path: "home",
-  })
-  .addRoute({
-    pattern: /^home$/,
-    path: "home",
-  })
-  .addRoute({
-    pattern: /^cart$/,
-    path: "cart",
-  })
-  .addRoute({
-    pattern: /^payment$/,
-    path: "payment",
-    guards: [isAuthorized],
-  })
-  .addRoute({
-    pattern: /^payment-status$/,
-    path: "payment-status",
-    guards: [isAuthorized],
-  })
-  .addRoute({
-    pattern: /^orders$/,
-    path: "orders",
-    guards: [isAuthorized],
-  })
-  .addRoute({
-    pattern: /^create-product$/,
-    path: "create-product",
-    guards: [isAuthorized],
-  })
-  .addRoute({
-    pattern: /^login$/,
-    path: "login",
-    guards: [() => !isAuthorized()],
-  })
-  .listen();
+const root = document.getElementById("root");
 
 root.append(app.element);

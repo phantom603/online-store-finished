@@ -33,6 +33,11 @@ export class Router {
 
       this.redirectTo(path);
     });
+
+    document.addEventListener("logout", () => {
+      // TODO: prevent redirect if user already on home page
+      this.redirectTo("home");
+    });
   }
 
   // NOTE: pattern "Facade"
@@ -41,7 +46,6 @@ export class Router {
   }
 
   navigate(path = "") {
-    console.error("path", path);
     history.pushState(null, null, path);
 
     this.route();
@@ -114,6 +118,10 @@ export class Router {
     });
 
     this.route();
+  }
+
+  destroy() {
+    // TODO: implement it
   }
 }
 

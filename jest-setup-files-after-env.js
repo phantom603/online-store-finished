@@ -8,7 +8,7 @@ fetchMock.enableMocks();
 
 beforeAll(() => {
   window[Symbol.for("app-config")] = {
-    PRODUCTS_SERVICE_URL: "http://example.com/",
+    BACKEND_URL: "http://example.com/",
   };
   productStore.init();
   userStore.init();

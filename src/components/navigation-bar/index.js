@@ -3,7 +3,6 @@ import { Offcanvas } from "bootstrap";
 import Modal from "../modal/index.js";
 import LoginForm from "../login-form/index.js";
 import { isAuthorized } from "../../router/guards/index.js";
-import { signOut } from "../../api/auth.js";
 
 export default class NavigationBar {
   subElements = {};
@@ -19,7 +18,7 @@ export default class NavigationBar {
   ];
 
   buttons = [
-    { name: "Login", guard: () => !isAuthorized(), data_cy: 'login-btn' },
+    { name: "Login", guard: () => !isAuthorized() },
     { name: "Logout", guard: () => isAuthorized() },
   ];
 
@@ -55,23 +54,29 @@ export default class NavigationBar {
     const fragment = new DocumentFragment();
 
     for (const button of this.buttons) {
-      const li = document.createElement("li");
+      const wrapper = document.createElement("div");
 
       if (!button.guard()) {
         continue;
       }
 
-      li.innerHTML = `
+      wrapper.innerHTML = `
         <li class="nav-item">
-          <button type="button" class="btn btn-link" data-element="${button.name.toLowerCase()}Btn" ${!!button.data_cy ? `data-cy=${button.data_cy}` : ''}>${button.name}</button>
+          <button type="button" 
+                  class="btn btn-link" 
+                  data-element="${button.name.toLowerCase()}Btn" 
+                  data-cy="${button.name.toLowerCase()}-btn">
+            ${button.name}
+          </button>
         </li>
       `;
 
-      fragment.append(li);
+      fragment.append(wrapper.firstElementChild);
     }
 
     this.subElements.navList.append(fragment);
   }
+
   update() {
     this.subElements.navList.innerHTML = "";
     this.createLinks();
@@ -96,6 +101,8 @@ export default class NavigationBar {
 
     if (loginBtn) {
       loginBtn.addEventListener("click", () => {
+        console.error("loginBtn click");
+
         const modal = new Modal();
 
         const loginForm = new LoginForm(() => {
@@ -109,28 +116,11 @@ export default class NavigationBar {
 
     if (logoutBtn) {
       logoutBtn.addEventListener("click", async () => {
-        try {
-          await signOut();
-
-          this.element.dispatchEvent(
-            new CustomEvent("show-success-alert", {
-              bubbles: true,
-              detail: "Logout success",
-            }),
-          );
-          this.element.dispatchEvent(
-            new CustomEvent("logout", {
-              bubbles: true,
-            }),
-          );
-        } catch (error) {
-          this.element.dispatchEvent(
-            new CustomEvent("show-error-alert", {
-              bubbles: true,
-              detail: error.message,
-            }),
-          );
-        }
+        this.element.dispatchEvent(
+          new CustomEvent("logout", {
+            bubbles: true,
+          }),
+        );
       });
     }
   }

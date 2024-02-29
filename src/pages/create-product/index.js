@@ -1,5 +1,4 @@
 import { createProduct, getBrands, getCategories } from "../../api/products.js";
-import CustomAlert from "../../components/alert/index.js";
 
 import "./create-product.css";
 
@@ -77,7 +76,7 @@ export default class CreateProductPage {
 
       try {
         this.startLoading();
-        const result = await this.createProduct(formData);
+        await this.createProduct(formData);
 
         this.showAlert("success", "Product was successfully created.");
         formElement.reset();

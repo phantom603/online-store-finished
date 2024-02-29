@@ -33,7 +33,7 @@ export default class Modal {
   }
 
   get template() {
-    return `<div class="modal hidden">
+    return `<div class="app-modal hidden">
       <div class="modal__content" data-element="modalContainer">
         <div data-element="content">
 
