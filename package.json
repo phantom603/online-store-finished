@@ -3,13 +3,13 @@
   "version": "1.0.0",
   "description": "",
   "scripts": {
+    "build": "cross-env NODE_ENV=production webpack build --config webpack/webpack.prod.js",
     "develop": "cross-env NODE_ENV=development webpack serve --config webpack/webpack.dev.js",
     "clean": "rimraf build",
     "test": "jest",
     "test:coverage": "npm test -- --coverage",
-    "deploy:server": "rsync -vzr --no-perms --no-owner --no-group --delete server/ github_ci_bot@159.65.113.178:/var/www/online-store.bootcamp.place/server",
-    "deploy:client": "rsync -vzr --no-perms --no-owner --no-group --delete build/ github_ci_bot@159.65.113.178:/var/www/online-store.bootcamp.place/client",
-    "cypress:open": "cypress open"
+    "cypress:open": "cypress open",
+    "deploy": "rsync -vzrl --no-perms --no-owner --no-group --delete build/ root@online-editor-client:/var/www/shop.bootcamp.place/client/"
   },
   "author": "",
   "license": "ISC",
