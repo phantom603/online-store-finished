@@ -1,32 +1,39 @@
 # Online Store
 
-## Start development
+## Development
+
+To run webpack dev server, please use the following command:
 
 ```bash
-npm run build
+npm run develop
 ```
 
-### Start client standalon
+## Unit tests
 
-```bash
-npm run start:client
-```
-
-### Start server standalon
-
-```bash
-npm run start:server
-```
-
-### Start server with pm2
-
-```bash
-pm2 start npm --name "online-store-server" -- run start:server
-pm2 save
-```
-
-## Run tests
+To run tests with Jest, please use the following command:
 
 ```bash
 npm run test
+```
+
+To get Jest coverage report, please use the following command:
+
+```bash
+npm run test:coverage
+```
+
+## E2E tests
+
+To run E2E tests with Cypress, please use the following command:
+
+```bash
+npm run cypress:open
+```
+
+## Build
+
+To build the project with webpack, please use the following command:
+
+```bash
+npm run build
 ```

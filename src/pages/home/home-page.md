@@ -28,8 +28,13 @@ flowchart LR
 
   subgraph Events
     newLines["`
-    Line1
-    Line 2
-    Line 3`"]
+      added-to-cart
+      removed-from-cart
+      search-filter
+      range-selected
+      add-filter
+      remove-filter
+      clear-filters
+      page-changed`"]
   end
 ```
