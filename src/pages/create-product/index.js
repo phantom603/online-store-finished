@@ -58,7 +58,7 @@ export default class CreateProductPage {
 
   stopLoading() {
     this.subElements.fieldset.removeAttribute("disabled");
-    this.subElements.submitBtn.innerHTML = "Sumbit";
+    this.subElements.submitBtn.innerHTML = "Submit";
   }
 
   initEventListeners() {
