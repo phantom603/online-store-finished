@@ -1,5 +1,7 @@
 # Online Store
 
+![Code Climate coverage](https://img.shields.io/codeclimate/coverage/dosandk/online-store-finished?style=for-the-badge)
+
 ## Development
 
 To run webpack dev server, please use the following command:
