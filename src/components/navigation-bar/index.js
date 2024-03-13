@@ -101,8 +101,6 @@ export default class NavigationBar {
 
     if (loginBtn) {
       loginBtn.addEventListener("click", () => {
-        console.error("loginBtn click");
-
         const modal = new Modal();
 
         const loginForm = new LoginForm(() => {
