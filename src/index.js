@@ -23,4 +23,6 @@ const app = new App({
 
 const root = document.getElementById("root");
 
+if (root === null) throw new Error("Root element not found");
+
 root.append(app.element);

@@ -22,7 +22,8 @@ export const signin = async (options = {}) => {
 
 export const signOut = async () => {
   const url = new URL("signout", getBaseUrl());
-  const result = await httpRequest.post(url, {
+
+  return await httpRequest.post(url, {
     headers: {
       "Content-Type": "application/json",
     },

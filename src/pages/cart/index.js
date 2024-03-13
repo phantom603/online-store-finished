@@ -14,7 +14,6 @@ export default class CartPage {
   get template() {
     return `<div>
       <h2 class="app-page-title">Cart Page</h2> 
-
     </div>`;
   }
 

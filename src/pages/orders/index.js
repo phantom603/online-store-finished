@@ -1,4 +1,3 @@
-import productStore from "../../storage/store.js";
 import { getOrders } from "../../api/payments.js";
 
 import "./orders.css";
