@@ -1,0 +1,22 @@
+name: "Test"
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v3
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: 16.x
+        cache: "npm"
+
+    - name: Install dependencies
+      run: npm ci
+      shell: bash
+
+    - name: Code Climate Coverage Action
+      uses: paambaati/codeclimate-action@v5.0.0
+      env:
+        CC_TEST_REPORTER_ID: dc3688da7b404264d3b10c3f1a058ce4cf8f96bdada5793dba6b1ed1f86464b1
+      with:
+        coverageCommand: npm run test:coverage
+        debug: true
