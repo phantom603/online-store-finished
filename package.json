@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "build": "cross-env NODE_ENV=production webpack build --config webpack/webpack.prod.js",
-    "develop": "cross-env NODE_ENV=development webpack serve --config webpack/webpack.dev.js",
+    "start": "cross-env NODE_ENV=development webpack serve --config webpack/webpack.dev.js",
     "clean": "rimraf build",
     "test": "jest",
     "test:coverage": "npm test -- --coverage",
