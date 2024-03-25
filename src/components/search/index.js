@@ -1,24 +1,18 @@
+import BaseComponent from "../base-component.js";
 import { debounce } from "./debounce/index.js";
 
 import "./search-style.css";
 
-export default class Search {
-  element;
-  subElements = {};
-
+export default class Search extends BaseComponent {
   onKeyUp = debounce((event) => {
     const title = event.target.value.trim();
 
-    this.dispatchEvent(title);
+    this.dispatchEvent("search-filter", title);
   }, 300);
 
   constructor() {
-    this.initialize();
-  }
-
-  initialize() {
-    this.render();
-    this.getSubElements();
+    super();
+    this.init();
     this.addEventListeners();
   }
 
@@ -37,53 +31,11 @@ export default class Search {
     `;
   }
 
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
-  getSubElements() {
-    const result = {};
-    const elements = this.element.querySelectorAll("[data-element]");
-
-    for (const subElement of elements) {
-      const name = subElement.dataset.element;
-
-      result[name] = subElement;
-    }
-
-    this.subElements = result;
-  }
-
-  dispatchEvent(searchString) {
-    this.element.dispatchEvent(
-      new CustomEvent("search-filter", {
-        bubbles: true,
-        detail: searchString,
-      }),
-    );
-  }
-
   addEventListeners() {
     this.subElements.search.addEventListener("input", this.onKeyUp);
   }
 
   clear() {
     this.element.reset();
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
   }
 }

@@ -1,16 +1,17 @@
+import BaseComponents from "../base-component.js";
 import { signin } from "../../api/auth.js";
 
 import "./login-form.css";
 
-export default class LoginForm {
+export default class LoginForm extends BaseComponents {
   constructor(onSuccessCallback = () => { }, onErrorCallback = () => { }) {
+    super();
     this.signin = signin;
 
     this.onSuccessCallback = onSuccessCallback;
     this.onErrorCallback = onErrorCallback;
 
-    this.render();
-    this.getSubElements();
+    this.init();
     this.initEventListeners();
   }
 
@@ -59,28 +60,11 @@ export default class LoginForm {
     </div>`;
   }
 
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
-  getSubElements() {
-    const result = {};
-    const subElements = this.element.querySelectorAll("[data-element]");
-
-    for (const item of subElements) {
-      result[item.dataset.element] = item;
-    }
-
-    this.subElements = result;
-  }
-
   onSuccess() {
     this.stopLoading();
-    this.element.dispatchEvent(new CustomEvent("login", { bubbles: true }));
+    // this.element.dispatchEvent(new CustomEvent("login", { bubbles: true }));
+    // this.dispatchEvent("login");
+    this.dispatchEvent("login", {});
     this.onSuccessCallback();
   }
 
@@ -122,7 +106,7 @@ export default class LoginForm {
 
       try {
         this.startLoading();
-        const user = await this.signin({
+        await this.signin({
           body: JSON.stringify(formData),
         });
         this.showAlert("success", "Login success");
@@ -137,26 +121,15 @@ export default class LoginForm {
   }
 
   showAlert(type = "", message = "") {
-    this.element.dispatchEvent(
-      new CustomEvent(`show-${type}-alert`, { bubbles: true, detail: message }),
-    );
+    // this.element.dispatchEvent(
+    //   new CustomEvent(`show-${type}-alert`, { bubbles: true, detail: message }),
+    // );
+    this.dispatchEvent(`show-${type}-alert`, message);
   }
 
-  showValidationErrors(error = {}) {
+  showValidationErrors() {
     const errorMsgElement = this.element.querySelector("button");
 
     errorMsgElement.classList.add("is-invalid");
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
   }
 }

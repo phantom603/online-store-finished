@@ -1,12 +1,15 @@
 import { Alert } from "bootstrap";
+import BaseComponent from "../base-component";
 
-export default class CustomAlert {
+export default class CustomAlert extends BaseComponent {
   timerId;
   type = "success";
   constructor(type = "", message = "") {
+    super();
     this.type = type;
     this.message = message;
-    this.render();
+
+    this.init();
 
     // NOTE: register alert for closing
     new Alert(this.element);
@@ -35,16 +38,7 @@ export default class CustomAlert {
     `;
   }
 
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
-  destroy() {
+  bereforeDestroy() {
     this.close();
-    this.element = {};
   }
 }

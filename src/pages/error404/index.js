@@ -1,6 +1,9 @@
-export default class Page {
+import BaseComponent from "../../components/base-component.js";
+
+export default class Page extends BaseComponent {
   constructor() {
-    this.render();
+    super();
+    this.init();
   }
 
   get template() {
@@ -8,36 +11,5 @@ export default class Page {
       <h2 class="app-page-title">404 Page</h2> 
       <a href="/">go to home</a>
     </div>`;
-  }
-
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
-  getSubElements() {
-    const result = {};
-    const subElements = this.element.querySelectorAll("[data-element]");
-
-    for (const item of subElements) {
-      result[item.dataset.element] = item;
-    }
-
-    this.subElements = result;
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
   }
 }

@@ -1,14 +1,15 @@
+import BaseComponent from "../../components/base-component.js";
 import productStore from "../../storage/store.js";
 import { getPaymentStatus } from "../../api/payments.js";
 
-export default class PaymentStatusPage {
+export default class PaymentStatusPage extends BaseComponent {
   constructor(match, search) {
+    super();
     this.productStore = productStore;
     this.getPaymentStatus = getPaymentStatus;
     this.sessionId = new URLSearchParams(search).get("session_id");
 
-    this.render();
-    this.getSubElements();
+    this.init();
     this.update();
   }
 
@@ -61,36 +62,5 @@ export default class PaymentStatusPage {
       <h2 class="app-page-title">Payment Status</h2> 
       <div class="d-flex justify-content-center align-items-center" data-element="paymentStatus"></div>
     </div>`;
-  }
-
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
-  getSubElements() {
-    const result = {};
-    const subElements = this.element.querySelectorAll("[data-element]");
-
-    for (const item of subElements) {
-      result[item.dataset.element] = item;
-    }
-
-    this.subElements = result;
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
   }
 }

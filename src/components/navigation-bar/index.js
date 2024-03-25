@@ -1,12 +1,11 @@
+import BaseComponent from "../base-component.js";
 // NOTE: this import needed for bootstrap navigation toaster icon
 import { Offcanvas } from "bootstrap";
 import Modal from "../modal/index.js";
 import LoginForm from "../login-form/index.js";
 import { isAuthorized } from "../../router/guards/index.js";
 
-export default class NavigationBar {
-  subElements = {};
-
+export default class NavigationBar extends BaseComponent {
   links = [
     { name: "Home", path: "/home", guard: () => true },
     {
@@ -23,8 +22,8 @@ export default class NavigationBar {
   ];
 
   constructor() {
-    this.render();
-    this.getSubElements();
+    super();
+    this.init();
     this.update();
   }
 
@@ -85,17 +84,6 @@ export default class NavigationBar {
     this.initEventListeners();
   }
 
-  getSubElements() {
-    const result = {};
-    const subElements = this.element.querySelectorAll("[data-element]");
-
-    for (const item of subElements) {
-      result[item.dataset.element] = item;
-    }
-
-    this.subElements = result;
-  }
-
   initEventListeners() {
     const { loginBtn, logoutBtn } = this.subElements;
 
@@ -138,13 +126,5 @@ export default class NavigationBar {
         </div>
       </nav>
     `;
-  }
-
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
   }
 }

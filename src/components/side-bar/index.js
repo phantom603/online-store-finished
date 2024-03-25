@@ -1,20 +1,19 @@
+import BaseComponent from "../base-component.js";
 import FiltersList from "../filters-list/index.js";
 import DoubleSlider from "../double-slider/index.js";
 
 import "./side-bar-style.css";
 
-export default class SideBar {
-  element;
-  subElements = {};
+export default class SideBar extends BaseComponent {
   components = {};
 
   constructor(categoriesFilter = [], brandFilter = []) {
+    super();
     this.categoriesFilter = categoriesFilter;
     this.brandFilter = brandFilter;
 
     this.initializeComponents();
-    this.render();
-    this.getSubElements();
+    this.init();
     this.renderComponents();
     this.addEventListeners();
   }
@@ -101,27 +100,6 @@ export default class SideBar {
     });
   }
 
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
-  getSubElements() {
-    const result = {};
-    const elements = this.element.querySelectorAll("[data-element]");
-
-    for (const subElement of elements) {
-      const name = subElement.dataset.element;
-
-      result[name] = subElement;
-    }
-
-    this.subElements = result;
-  }
-
   addEventListeners() {
     this.subElements.clearFilters.addEventListener("pointerdown", () => {
       for (const component of Object.values(this.components)) {
@@ -132,25 +110,7 @@ export default class SideBar {
     });
   }
 
-  dispatchEvent(eventName = "", detail = {}) {
-    this.element.dispatchEvent(
-      new CustomEvent(eventName, {
-        bubbles: true,
-        detail,
-      }),
-    );
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
+  afterDestroy() {
     this.components = {};
   }
 }

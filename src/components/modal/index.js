@@ -1,7 +1,8 @@
+import BaseComponent from "../base-component.js";
+
 import "./modal-style.css";
 
-export default class Modal {
-  subElements = {};
+export default class Modal extends BaseComponent {
   status = "closed";
 
   onDocumentClick = (event) => {
@@ -20,10 +21,10 @@ export default class Modal {
   };
 
   constructor(component = {}) {
+    super();
     this.component = component;
     this.controlSelector = "hidden";
-    this.render();
-    this.getSubElements();
+    this.init();
     this.renderComponent();
   }
 
@@ -35,27 +36,9 @@ export default class Modal {
   get template() {
     return `<div class="app-modal hidden">
       <div class="modal__content" data-element="modalContainer">
-        <div data-element="content">
-
-        </div>
+        <div data-element="content"></div>
       </div>
     </div>`;
-  }
-
-  render() {
-    const element = document.createElement("div");
-
-    element.innerHTML = this.template;
-
-    this.element = element.firstElementChild;
-  }
-
-  getSubElements() {
-    const elements = this.element.querySelectorAll("[data-element]");
-
-    for (const subElement of elements) {
-      this.subElements[subElement.dataset.element] = subElement;
-    }
   }
 
   renderComponent() {
@@ -90,14 +73,7 @@ export default class Modal {
     document.removeEventListener("pointerdown", this.onDocumentClick, true);
   }
 
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
+  afterDestroy() {
     this.removeEventListeners();
     this.component.destroy();
   }

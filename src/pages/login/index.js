@@ -1,15 +1,11 @@
+import BaseComponent from "../../components/base-component.js";
 import LoginForm from "../../components/login-form";
 
-export default class LoginPage {
+export default class LoginPage extends BaseComponent {
   components = {};
 
   onLoginSuccess = () => {
-    this.element.dispatchEvent(
-      new CustomEvent("redirect", {
-        bubbles: true,
-        detail: "home",
-      }),
-    );
+    this.dispatchEvent("redirect", "home");
   };
 
   onLoginError = () => {
@@ -17,12 +13,12 @@ export default class LoginPage {
   };
 
   constructor() {
+    super();
     this.components.loginForm = new LoginForm(
       this.onLoginSuccess,
       this.onLoginError,
     );
-    this.render();
-    this.getSubElements();
+    this.init();
     this.renderComponents();
   }
 
@@ -30,25 +26,6 @@ export default class LoginPage {
     return `<div>
       <div data-element="loginForm"></div>
     </div>`;
-  }
-
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
-  getSubElements() {
-    const result = {};
-    const subElements = this.element.querySelectorAll("[data-element]");
-
-    for (const item of subElements) {
-      result[item.dataset.element] = item;
-    }
-
-    this.subElements = result;
   }
 
   renderComponents() {
@@ -62,17 +39,7 @@ export default class LoginPage {
     });
   }
 
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
-
+  afterDestroy() {
     for (const component of Object.values(this.components)) {
       component.destroy();
     }

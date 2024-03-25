@@ -1,9 +1,8 @@
+import BaseComponent from "../base-component.js";
+
 import "./double-slider-style.css";
 
-export default class DoubleSlider {
-  element;
-  subElements = {};
-
+export default class DoubleSlider extends BaseComponent {
   onThumbPointerMove = (event) => {
     event.preventDefault();
 
@@ -57,15 +56,10 @@ export default class DoubleSlider {
     document.removeEventListener("pointermove", this.onThumbPointerMove);
     document.removeEventListener("pointerup", this.onThumbPointerUp);
 
-    this.element.dispatchEvent(
-      new CustomEvent("range-selected", {
-        bubbles: true,
-        detail: {
-          filterName: this.filterName,
-          value: this.getValue(),
-        },
-      }),
-    );
+    this.dispatchEvent("range-selected", {
+      filterName: this.filterName,
+      value: this.getValue(),
+    });
   };
 
   constructor({
@@ -79,6 +73,7 @@ export default class DoubleSlider {
     precision = 0,
     filterName = "",
   } = {}) {
+    super();
     this.min = min;
     this.max = max;
     this.formatValue = formatValue;
@@ -86,7 +81,7 @@ export default class DoubleSlider {
     this.precision = 10 ** precision;
     this.filterName = filterName;
 
-    this.render();
+    this.init();
   }
 
   get template() {
@@ -103,18 +98,9 @@ export default class DoubleSlider {
     </div>`;
   }
 
-  render() {
-    const element = document.createElement("div");
-
-    element.innerHTML = this.template;
-
-    this.element = element.firstElementChild;
+  afterRender() {
     this.element.ondragstart = () => false;
-
-    this.subElements = this.getSubElements(element);
-
     this.initEventListeners();
-
     this.update();
   }
 
@@ -129,25 +115,7 @@ export default class DoubleSlider {
     );
   }
 
-  getSubElements(element) {
-    const result = {};
-    const elements = element.querySelectorAll("[data-element]");
-
-    for (const subElement of elements) {
-      const name = subElement.dataset.element;
-
-      result[name] = subElement;
-    }
-
-    return result;
-  }
-
-  remove() {
-    this.element.remove();
-  }
-
-  destroy() {
-    this.remove();
+  afterDestroy() {
     document.removeEventListener("pointermove", this.onThumbPointerMove);
     document.removeEventListener("pointerup", this.onThumbPointerUp);
   }

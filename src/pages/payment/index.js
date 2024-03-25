@@ -1,15 +1,17 @@
+import BaseComponent from "../../components/base-component.js";
 import productStore from "../../storage/store.js";
 import { loadStripe } from "@stripe/stripe-js";
 import { getClientSecret } from "../../api/payments.js";
 
-export default class PaymentPage {
-  constructor(...props) {
+export default class PaymentPage extends BaseComponent {
+  constructor() {
+    super();
     this.productStore = productStore;
     this.getClientSecret = getClientSecret;
 
     this.products = this.productStore.getAll();
 
-    this.render();
+    this.init();
 
     if (Object.keys(this.products).length) {
       this.initPaymentForm();
@@ -52,37 +54,9 @@ export default class PaymentPage {
     </div>`;
   }
 
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
-  getSubElements() {
-    const result = {};
-    const subElements = this.element.querySelectorAll("[data-element]");
-
-    for (const item of subElements) {
-      result[item.dataset.element] = item;
-    }
-
-    this.subElements = result;
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
+  beferDestroy() {
     if (this.checkout) {
       this.checkout.destroy();
     }
-    this.remove();
-    this.element = null;
-    this.subElements = {};
   }
 }

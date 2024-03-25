@@ -1,15 +1,17 @@
+import BaseComponent from "../base-component";
+
 import "./card-list-style.css";
 
-export default class CardsList {
+export default class CardsList extends BaseComponent {
   element;
   subElements = {};
 
   constructor({ data = [], Component = {} } = {}) {
+    super();
     this.data = data;
     this.Component = Component;
 
-    this.render();
-    this.getSubElements();
+    this.init();
     this.update(this.data);
   }
 
@@ -19,27 +21,6 @@ export default class CardsList {
         <div class="os-products-list" data-element="body"></div>
       </div>
     `;
-  }
-
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
-  getSubElements() {
-    const result = {};
-    const elements = this.element.querySelectorAll("[data-element]");
-
-    for (const subElement of elements) {
-      const name = subElement.dataset.element;
-
-      result[name] = subElement;
-    }
-
-    this.subElements = result;
   }
 
   update(data = []) {
@@ -52,17 +33,5 @@ export default class CardsList {
     } else {
       this.subElements.body.innerHTML = "No products found";
     }
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
   }
 }

@@ -1,3 +1,4 @@
+import BaseComponent from "../../components/base-component.js";
 import Pagination from "../../components/pagination/index.js";
 
 import SideBar from "../../components/side-bar/index.js";
@@ -12,9 +13,7 @@ import { getProducts, getCategories, getBrands } from "../../api/products.js";
 
 import "./home.css";
 
-export default class Page {
-  element;
-  subElements = {};
+export default class Page extends BaseComponent {
   components = {};
   pageLimit = 9;
   totalPages = 100;
@@ -22,6 +21,7 @@ export default class Page {
   abortController = new AbortController();
 
   constructor() {
+    super();
     this.productStore = productStore;
 
     this.getProducts = getProducts;
@@ -31,8 +31,7 @@ export default class Page {
     this.filters.set("_page", "1");
     this.filters.set("_limit", this.pageLimit);
 
-    this.render();
-    this.getSubElements();
+    this.init();
     this.initializeComponents();
     this.renderComponents();
     this.initEventListeners();
@@ -97,14 +96,6 @@ export default class Page {
     this.components.cardsList.update(productsData);
   }
 
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
   initializeComponents() {
     const search = new Search();
     const cardsList = new CardsList({ Component: Card });
@@ -128,19 +119,6 @@ export default class Page {
         root.append(element);
       }
     });
-  }
-
-  getSubElements() {
-    const result = {};
-    const elements = this.element.querySelectorAll("[data-element]");
-
-    for (const subElement of elements) {
-      const name = subElement.dataset.element;
-
-      result[name] = subElement;
-    }
-
-    this.subElements = result;
   }
 
   initEventListeners() {
@@ -281,19 +259,8 @@ export default class Page {
     return products;
   }
 
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-
+  afterDestroy() {
     this.abortController.abort();
-
-    this.element = null;
-    this.subElements = {};
     this.filters = new URLSearchParams();
 
     for (const component of Object.values(this.components)) {

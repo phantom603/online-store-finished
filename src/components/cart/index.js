@@ -1,15 +1,16 @@
+import BaseComponent from "../base-component.js";
 import productStore from "../../storage/store.js";
 
 import "./cart-style.css";
 
-export default class Cart {
+export default class Cart extends BaseComponent {
   emptyCartMessage = "There is no items in the cart";
 
   constructor() {
+    super();
     this.productStore = productStore;
 
-    this.render();
-    this.getSubElements();
+    this.init();
     this.renderItems();
     this.initEventListeners();
   }
@@ -34,9 +35,7 @@ export default class Cart {
 
     return `
       <div class="cart-container">
-        <ul class="cart-list" data-element='list'>
-
-        </ul>
+        <ul class="cart-list" data-element='list'></ul>
         <div class="footer">
           <div class="cart-total">
             Total: <span data-element="total">${total}</span>
@@ -48,27 +47,6 @@ export default class Cart {
         </div>
       </div>
     `;
-  }
-
-  render() {
-    const element = document.createElement("div");
-
-    element.innerHTML = this.template;
-
-    this.element = element.firstElementChild;
-  }
-
-  getSubElements() {
-    const result = {};
-    const elements = this.element.querySelectorAll("[data-element]");
-
-    for (const subElement of elements) {
-      const name = subElement.dataset.element;
-
-      result[name] = subElement;
-    }
-
-    this.subElements = result;
   }
 
   initEventListeners() {
@@ -84,21 +62,11 @@ export default class Cart {
         const { counter } = countBtn.dataset;
 
         if (counter === "1") {
-          this.element.dispatchEvent(
-            new CustomEvent("increase-counter", {
-              detail: id,
-              bubbles: true,
-            }),
-          );
+          this.dispatchEvent("increase-counter", id);
         }
 
         if (counter === "-1") {
-          this.element.dispatchEvent(
-            new CustomEvent("decrease-counter", {
-              detail: id,
-              bubbles: true,
-            }),
-          );
+          this.dispatchEvent("decrease-counter", id);
         }
 
         const productCount = this.productStore.getProductCount(id);
@@ -172,17 +140,5 @@ export default class Cart {
     wrapper.innerHTML = template;
 
     return wrapper.firstElementChild;
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
   }
 }

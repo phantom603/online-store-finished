@@ -1,17 +1,16 @@
+import BaseComponent from "../../components/base-component.js";
 import { createProduct, getBrands, getCategories } from "../../api/products.js";
 
 import "./create-product.css";
 
-export default class CreateProductPage {
-  subElements = {};
-
+export default class CreateProductPage extends BaseComponent {
   constructor() {
+    super();
     this.createProduct = createProduct;
     this.getCategories = getCategories;
     this.getBrands = getBrands;
 
-    this.render();
-    this.getSubElements();
+    this.init();
     this.initEventListeners();
     this.loadData();
   }
@@ -167,36 +166,5 @@ export default class CreateProductPage {
         </fieldset>
       </form>
     </div>`;
-  }
-
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
-  getSubElements() {
-    const result = {};
-    const subElements = this.element.querySelectorAll("[data-element]");
-
-    for (const item of subElements) {
-      result[item.dataset.element] = item;
-    }
-
-    this.subElements = result;
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
   }
 }

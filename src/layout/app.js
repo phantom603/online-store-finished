@@ -1,3 +1,4 @@
+import BaseComponent from "../components/base-component.js";
 import NavigationBar from "../components/navigation-bar/index.js";
 import routes from "./routes.js";
 
@@ -5,18 +6,18 @@ import { signOut } from "../api/auth.js";
 
 import "./app.css";
 
-export default class App {
+export default class App extends BaseComponent {
   element;
   components = {};
 
   constructor({ router = {} } = {}) {
+    super();
     this.router = router;
 
     this.initRouter();
     this.initComponents();
 
-    this.render();
-    this.getSubElements();
+    this.init();
     this.renderComponents();
     this.initEventListeners();
   }
@@ -78,36 +79,5 @@ export default class App {
         <div id="content" class="content"></div>
       </main>
     `;
-  }
-
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
-  getSubElements() {
-    const result = {};
-    const subElements = this.element.querySelectorAll("[data-element]");
-
-    for (const item of subElements) {
-      result[item.dataset.element] = item;
-    }
-
-    this.subElements = result;
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
   }
 }

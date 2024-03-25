@@ -1,15 +1,14 @@
+import BaseComponent from "../base-component.js";
+
 import "./filter-list-style.css";
 
-export default class FiltersList {
-  element;
-  subElements = {};
-
+export default class FiltersList extends BaseComponent {
   constructor({ title = "", list = [] } = {}) {
+    super();
     this.title = title;
     this.list = list;
 
-    this.render();
-    this.getSubElements();
+    this.init();
     this.addEventListeners();
   }
 
@@ -28,9 +27,8 @@ export default class FiltersList {
       return `<div class="os-filters-panel-item">
         <div class="os-form-checkbox">
           <input id="${item.value}"
-            type="checkbox" name="filter" value="${item.value}" ${
-              item.checked ? "checked" : ""
-            }>
+            type="checkbox" name="filter" value="${item.value}" ${item.checked ? "checked" : ""
+        }>
           <label for="${item.value}">${item.title}</label>
         </div>
       </div>`;
@@ -39,31 +37,10 @@ export default class FiltersList {
     return result.join("");
   }
 
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
   update(list) {
     this.list = list;
 
     this.subElements.body.innerHTML = this.body;
-  }
-
-  getSubElements() {
-    const result = {};
-    const elements = this.element.querySelectorAll("[data-element]");
-
-    for (const subElement of elements) {
-      const name = subElement.dataset.element;
-
-      result[name] = subElement;
-    }
-
-    this.subElements = result;
   }
 
   reset() {
@@ -77,26 +54,5 @@ export default class FiltersList {
 
       this.dispatchEvent(eventName, target.value);
     });
-  }
-
-  dispatchEvent(eventName = "", detail) {
-    this.element.dispatchEvent(
-      new CustomEvent(eventName, {
-        bubbles: true,
-        detail,
-      }),
-    );
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
   }
 }

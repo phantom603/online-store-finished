@@ -1,8 +1,8 @@
+import BaseComponent from "../base-component";
+
 import "./card-style.css";
 
-export default class Card {
-  element;
-
+export default class Card extends BaseComponent {
   defaultData = {
     id: "",
     images: [],
@@ -15,10 +15,9 @@ export default class Card {
   };
 
   constructor(data = {}) {
+    super();
     this.data = { ...this.defaultData, ...data };
-
-    this.render();
-    this.getSubElements();
+    this.init();
     this.addEventListeners();
   }
 
@@ -60,14 +59,6 @@ export default class Card {
     `;
   }
 
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
   addEventListeners() {
     const { addToCartBtn } = this.subElements;
 
@@ -100,37 +91,5 @@ export default class Card {
     this.subElements.addToCartBtn.innerHTML = "Add to cart";
     addToCartBtn.classList.remove("active");
     this.data.inStore = false;
-  }
-
-  dispatchEvent(type = "", payload = {}) {
-    this.element.dispatchEvent(
-      new CustomEvent(type, {
-        detail: payload,
-        bubbles: true,
-      }),
-    );
-  }
-
-  getSubElements() {
-    const result = {};
-    const subElements = this.element.querySelectorAll("[data-element]");
-
-    for (const item of subElements) {
-      result[item.dataset.element] = item;
-    }
-
-    this.subElements = result;
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
   }
 }

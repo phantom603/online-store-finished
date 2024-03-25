@@ -1,11 +1,13 @@
+import BaseComponent from "../../components/base-component.js";
 import { getOrders } from "../../api/payments.js";
 
 import "./orders.css";
 
-class OrderTable {
+class OrderTable extends BaseComponent {
   constructor(order = {}) {
+    super();
     this.order = order;
-    this.render();
+    this.init();
   }
 
   get template() {
@@ -59,22 +61,14 @@ class OrderTable {
       })
       .join("");
   }
-
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
 }
 
-export default class OrdersPage {
+export default class OrdersPage extends BaseComponent {
   constructor() {
+    super();
     this.getOrders = getOrders;
 
-    this.render();
-    this.getSubElements();
+    this.init();
     this.loadData();
   }
 
@@ -133,36 +127,5 @@ export default class OrdersPage {
     }
 
     ordersList.append(fragment);
-  }
-
-  render() {
-    const wrapper = document.createElement("div");
-
-    wrapper.innerHTML = this.template;
-
-    this.element = wrapper.firstElementChild;
-  }
-
-  getSubElements() {
-    const result = {};
-    const subElements = this.element.querySelectorAll("[data-element]");
-
-    for (const item of subElements) {
-      result[item.dataset.element] = item;
-    }
-
-    this.subElements = result;
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
-    this.element = null;
-    this.subElements = {};
   }
 }

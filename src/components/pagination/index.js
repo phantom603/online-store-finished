@@ -1,74 +1,49 @@
+import BaseComponent from "../base-component.js";
+
 import "./pagination-style.css";
 
-export default class Pagination {
-  element;
+export default class Pagination extends BaseComponent {
   start = 0;
   pageIndex = 0;
   subElements = {};
 
   constructor({ totalPages = 10, page = 1 } = {}) {
+    super();
     this.totalPages = totalPages;
     this.pageIndex = page - 1;
-    this.initialize();
-  }
-
-  initialize() {
-    this.render();
-    this.getSubElements();
+    this.init();
     this.addEventListeners();
-
     this.update();
-  }
-
-  getSubElements() {
-    const result = {};
-    const elements = this.element.querySelectorAll("[data-element]");
-
-    for (const subElement of elements) {
-      const name = subElement.dataset.element;
-
-      result[name] = subElement;
-    }
-
-    this.subElements = result;
   }
 
   get template() {
     return `
-    <nav class="os-pagination">
-      <a href="#" class="page-link previous" data-element="nav-prev">
-        <i class="bi bi-chevron-left"></i>
-      </a>
+      <nav class="os-pagination">
+        <a href="#" class="page-link previous" data-element="nav-prev">
+          <i class="bi bi-chevron-left"></i>
+        </a>
 
-      <ul class="page-list" data-element="pagination">
+        <ul class="page-list" data-element="pagination">
 
-      </ul>
+        </ul>
 
-      <a href="#" class="page-link next" data-element="nav-next">
-        <i class="bi bi-chevron-right"></i>
-      </a>
-    </nav>
+        <a href="#" class="page-link next" data-element="nav-next">
+          <i class="bi bi-chevron-right"></i>
+        </a>
+      </nav>
     `;
   }
 
   goToPrevPage() {
     if (this.pageIndex - 1 >= 0) {
-      this.dispatchEvent(this.pageIndex - 1);
+      this.dispatchEvent("page-changed", this.pageIndex - 1);
     }
   }
 
   goToNextPage() {
     if (this.pageIndex + 1 < this.totalPages) {
-      this.dispatchEvent(this.pageIndex + 1);
+      this.dispatchEvent("page-changed", this.pageIndex + 1);
     }
-  }
-
-  render() {
-    const element = document.createElement("div");
-
-    element.innerHTML = this.template;
-
-    this.element = element.firstElementChild;
   }
 
   addEventListeners() {
@@ -94,7 +69,7 @@ export default class Pagination {
       if (!isNaN(pageIndex) && this.pageIndex !== pageIndex) {
         this.pageIndex = pageIndex;
 
-        this.dispatchEvent(pageIndex);
+        this.dispatchEvent("page-changed", pageIndex);
       }
     });
 
@@ -135,31 +110,14 @@ export default class Pagination {
         return `<li>
           <button href="#" 
             data-element="page-link" 
-            class="page-link ${isActive}" data-page-index="${index}">${
-              index + 1
-            }</button>
+            class="page-link ${isActive}" data-page-index="${index}">${index + 1
+          }</button>
         </li>`;
       })
       .join("");
   }
 
-  dispatchEvent(pageIndex) {
-    this.element.dispatchEvent(
-      new CustomEvent("page-changed", {
-        bubbles: true,
-        detail: pageIndex,
-      }),
-    );
-  }
-
-  remove() {
-    if (this.element) {
-      this.element.remove();
-    }
-  }
-
-  destroy() {
-    this.remove();
+  afterDestroy() {
     document.removeEventListener("page-changed", this.onPageChanged);
   }
 }
