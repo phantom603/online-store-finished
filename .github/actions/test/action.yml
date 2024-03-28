@@ -1,4 +1,8 @@
 name: "Test"
+inputs:
+  codecov-token:
+    description: "Codecov token"
+    required: true
 runs:
   using: "composite"
   steps:
