@@ -12,6 +12,7 @@ describe('Login Flow', () => {
     cy.get("[data-cy='login-submit-btn']").click();
 
     // check errors
+    cy.get("[data-cy='app-modal']").should('exist');
     cy.get("[data-cy='invalid-credentials']").should('be.visible');
     cy.get("[data-cy='alert']").should('be.visible').and('contain', 'Login error');
 
@@ -31,7 +32,7 @@ describe('Login Flow', () => {
     cy.get("[data-cy='login-submit-btn']").click();
 
     // check everything is correct
-    cy.get("[data-cy='invalid-credentials']").should('not.be.visible');
+    cy.get("[data-cy='app-modal']").should('not.exist');
     cy.get("[data-cy='alert']").should('be.visible').and('contain', 'Login success');
 
     // and our cookie should be set to 'session'

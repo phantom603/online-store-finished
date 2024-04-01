@@ -13,6 +13,7 @@ Cypress.Commands.add('login', (email, password) => {
       // make the cypress wait till login is completed
       // otherwise if we try to visit protected page
       // the frontend may not be able to set up the flag that user was logged in
+      cy.get("[data-cy='app-modal']").should('not.exist');
       cy.get("[data-cy='alert']").should('be.visible').and('contain', 'Login success');
     }
   )

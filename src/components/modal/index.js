@@ -34,7 +34,7 @@ export default class Modal extends BaseComponent {
   }
 
   get template() {
-    return `<div class="app-modal hidden">
+    return `<div class="app-modal hidden" data-cy="app-modal">
       <div class="modal__content" data-element="modalContainer">
         <div data-element="content"></div>
       </div>
