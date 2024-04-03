@@ -5,14 +5,11 @@ describe("Base component", () => {
 
   beforeEach(() => {
     component = new BaseComponent();
-
-    // document.body.append(component.element);
   });
 
   afterEach(() => {
     component.destroy();
     component = null;
-    // document.body.innerHTML = "";
   });
 
   it("should have init method", () => {
@@ -24,7 +21,7 @@ describe("Base component", () => {
   });
 
   it("should have afterInit method", () => {
-    expect(component.beforeInit).toBeDefined();
+    expect(component.afterInit).toBeDefined();
   });
 
   it("should have render method", () => {
