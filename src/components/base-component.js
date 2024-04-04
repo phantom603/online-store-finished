@@ -1,16 +1,12 @@
 export default class BaseComponents {
   subElements = {};
 
-  beforeInit() {}
-
   init() {
     this.beforeRender();
     this.render();
     this.getSubElements();
     this.afterRender();
   }
-
-  afterInit() {}
 
   beforeRender() {
     // This method will be called before render method

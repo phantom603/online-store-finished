@@ -16,14 +16,6 @@ describe("Base component", () => {
     expect(component.init).toBeDefined();
   });
 
-  it("should have beforeInit method", () => {
-    expect(component.beforeInit).toBeDefined();
-  });
-
-  it("should have afterInit method", () => {
-    expect(component.afterInit).toBeDefined();
-  });
-
   it("should have render method", () => {
     expect(component.render).toBeDefined();
   });
