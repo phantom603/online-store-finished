@@ -1,6 +1,6 @@
 # Online Store
 
-[![Code Climate coverage](https://img.shields.io/codeclimate/coverage/dosandk/online-store-finished?style=for-the-badge)](https://codeclimate.com/github/dosandk/online-store-finished)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/d0ad4ccff6b913e3e5f4/test_coverage)](https://codeclimate.com/github/dosandk/online-store-finished/test_coverage)
 
 ## Development
 
