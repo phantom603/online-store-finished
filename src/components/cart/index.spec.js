@@ -1,8 +1,17 @@
 import Cart from "./index.js";
 import { products } from "../../fixtures/products.js";
+import productStore from "../../storage/store.js";
 
 describe("Cart component", () => {
   let cart;
+
+  beforeAll(() => {
+    productStore.init();
+  });
+
+  afterAll(() => {
+    productStore.destroy();
+  });
 
   beforeEach(() => {
     const [p1, p2, p3] = products;

@@ -145,6 +145,7 @@ class ProductStore {
 
   destroy() {
     this.abortController.abort();
+    this.storage = null;
   }
 }
 

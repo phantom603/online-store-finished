@@ -1,7 +1,16 @@
 import PaymentsPage from "./index";
+import productStore from "../../storage/store.js";
 
 describe("Payments page", () => {
   let page;
+
+  beforeAll(() => {
+    productStore.init();
+  });
+
+  afterAll(() => {
+    productStore.destroy();
+  });
 
   beforeEach(() => {
     page = new PaymentsPage();

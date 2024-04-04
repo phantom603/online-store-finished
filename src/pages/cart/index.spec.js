@@ -1,7 +1,16 @@
 import CartPage from "./index";
+import productStore from "../../storage/store.js";
 
 describe("Cart page", () => {
   let page;
+
+  beforeAll(() => {
+    productStore.init();
+  });
+
+  afterAll(() => {
+    productStore.destroy();
+  });
 
   beforeEach(() => {
     page = new CartPage();
