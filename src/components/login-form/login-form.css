@@ -1,0 +1,9 @@
+.login-form-wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.login-form {
+  width: 600px;
+}

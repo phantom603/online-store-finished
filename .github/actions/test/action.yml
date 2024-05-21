@@ -1,0 +1,32 @@
+name: "Test"
+inputs:
+  codecov-token:
+    description: "Codecov token"
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: 20.x
+        cache: "npm"
+
+    - name: Install dependencies
+      run: npm ci
+      shell: bash
+
+    - name: Code Climate Coverage Action
+      uses: paambaati/codeclimate-action@v5.0.0
+      env:
+        CC_TEST_REPORTER_ID: dc3688da7b404264d3b10c3f1a058ce4cf8f96bdada5793dba6b1ed1f86464b1
+      with:
+        coverageCommand: npm run test:coverage
+        debug: true
+
+    - name: Upload coverage reports to Codecov
+      uses: codecov/codecov-action@v4.0.1
+      with:
+        token: ${{ inputs.codecov-token }}
+        slug: dosandk/online-store-finished

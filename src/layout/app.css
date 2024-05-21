@@ -1,0 +1,46 @@
+.app-main {
+  max-width: 1320px;
+  margin: 0 auto;
+}
+
+.content {
+  min-height: 100vh;
+}
+
+.app-main-link {
+  color: grey;
+}
+
+.app-page-title {
+  font-size: 1.5rem;
+  color: #7e72f2;
+  margin-bottom: 2rem;
+}
+
+/* Buttons */
+.os-btn-primary {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 3px;
+  font-size: 0.875rem;
+  font-weight: 400;
+  font-family: "Montserrat", sans-serif;
+  line-height: 1;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: 0.3s;
+  background-color: #7e72f2;
+  color: #fff;
+}
+
+.os-btn-primary.active {
+  background-color: deeppink;
+}
+
+.os-btn-primary.active:hover {
+  background-color: #cb1075;
+}
+
+.os-btn-primary:hover {
+  background-color: #6158be;
+}
